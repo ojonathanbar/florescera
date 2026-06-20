@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Florescerá — Habite seu lar</title>
+  <meta name="description" content="Uma comunidade para mulheres que desejam viver cada estação da vida com propósito, fé e beleza no ordinário." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --rosa:        #D4826A;
+      --rosa-claro:  #E8A898;
+      --rosa-fundo:  #F5EDE8;
+      --terracota:   #8B4A3A;
+      --verde:       #4A6741;
+      --creme:       #F5F0E8;
+      --creme-escuro:#EDE5DA;
+      --branco:      #FFFFFF;
+      --texto:       #2C2018;
+      --texto-suave: #6B5A50;
+      --serif:       'Playfair Display', Georgia, serif;
+      --sans:        'Inter', system-ui, sans-serif;
+      --radius:      12px;
+      --max:         1100px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--creme); color: var(--texto); line-height: 1.7; overflow-x: hidden; }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    .container { width: 90%; max-width: var(--max); margin: 0 auto; }
+    .section { padding: 96px 0; }
+    .section-label { font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--rosa); margin-bottom: 16px; }
+    .section-title { font-family: var(--serif); font-size: clamp(32px, 5vw, 52px); font-weight: 400; line-height: 1.2; color: var(--terracota); margin-bottom: 24px; }
+    .section-text { font-size: 16px; color: var(--texto-suave); line-height: 1.85; max-width: 640px; }
+    .section-text + .section-text { margin-top: 16px; }
+
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px; border-radius: 99px; font-family: var(--sans); font-size: 14px; font-weight: 500; letter-spacing: 0.04em; cursor: pointer; transition: transform 0.18s, box-shadow 0.18s; border: none; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--rosa); color: var(--branco); }
+    .btn-primary:hover { box-shadow: 0 8px 24px rgba(212,130,106,0.4); }
+    .btn-outline { background: transparent; color: var(--terracota); border: 1.5px solid var(--terracota); }
+    .btn-outline:hover { box-shadow: 0 8px 24px rgba(139,74,58,0.15); }
+    .btn-wpp { background: #25D366; color: #fff; }
+    .btn-wpp:hover { box-shadow: 0 8px 24px rgba(37,211,102,0.3); }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 14px 0;
+      background: rgba(245,240,232,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(212,130,106,0.15);
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 2px 20px rgba(44,32,24,0.08); }
+    nav .inner { display: flex; align-items: center; justify-content: space-between; width: 90%; max-width: var(--max); margin: 0 auto; }
+    .nav-logo img { height: 44px; width: auto; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--texto-suave); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--rosa); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { width: 24px; height: 1.5px; background: var(--terracota); border-radius: 2px; transition: all 0.3s; }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 72px; left: 0; right: 0;
+      background: var(--creme);
+      padding: 24px;
+      border-bottom: 1px solid var(--creme-escuro);
+      z-index: 99;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-size: 16px; color: var(--texto-suave); padding: 8px 0; border-bottom: 1px solid var(--creme-escuro); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 80px;
+      background: var(--creme);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-ornament-right {
+      position: absolute;
+      right: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 85vh;
+      max-height: 700px;
+      width: auto;
+      opacity: 0.18;
+      pointer-events: none;
+      user-select: none;
+    }
+    .hero-ornament-bg {
+      position: absolute;
+      right: 5%;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 60vh;
+      max-height: 520px;
+      width: auto;
+      opacity: 0.09;
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 600px; }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--rosa); margin-bottom: 24px; }
+    .hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--rosa); }
+    .hero-title { font-family: var(--serif); font-size: clamp(48px, 7vw, 88px); font-weight: 400; line-height: 1.0; color: var(--terracota); margin-bottom: 10px; }
+    .hero-subtitle { font-family: var(--serif); font-style: italic; font-size: clamp(18px, 2.5vw, 26px); color: var(--rosa); margin-bottom: 28px; }
+    .hero-text { font-size: 17px; color: var(--texto-suave); line-height: 1.8; margin-bottom: 40px; }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+    /* ── SOBRE ── */
+    #sobre { background: var(--branco); }
+    .sobre-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .sobre-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .sobre-circulo {
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      background: var(--rosa-fundo);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .sobre-circulo img { width: 220px; height: auto; }
+    .sobre-badge {
+      position: absolute;
+      bottom: 16px;
+      right: -24px;
+      background: var(--terracota);
+      color: var(--branco);
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 13px;
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      max-width: 200px;
+      line-height: 1.6;
+      box-shadow: 0 8px 24px rgba(44,32,24,0.15);
+    }
+
+    /* ── HISTÓRIA ── */
+    #historia { background: var(--creme); }
+    .historia-inner { display: grid; grid-template-columns: 1fr 2fr; gap: 64px; align-items: start; }
+    .historia-sticky { position: sticky; top: 120px; }
+    .historia-ornament { width: 100px; height: auto; margin-bottom: 24px; opacity: 0.6; }
+    .historia-paragraphs p { font-size: 16px; color: var(--texto-suave); line-height: 1.9; margin-bottom: 20px; }
+    .historia-paragraphs p:first-child { font-family: var(--serif); font-size: 19px; color: var(--texto); }
+    .historia-destaque { font-family: var(--serif); font-style: italic; color: var(--terracota); font-size: 17px; border-left: 3px solid var(--rosa); padding-left: 20px; margin: 8px 0 20px; line-height: 1.6; }
+
+    /* ── TIME ── */
+    #time { background: var(--branco); }
+    .time-fundadora {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 40px;
+      align-items: start;
+      padding: 40px;
+      background: var(--creme);
+      border-radius: 20px;
+      margin-bottom: 56px;
+      border-left: 4px solid var(--rosa);
+    }
+    .avatar-box {
+      width: 88px; height: 88px;
+      border-radius: 50%;
+      background: var(--rosa-fundo);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .avatar-box img { width: 52px; height: auto; }
+    .time-nome { font-family: var(--serif); font-size: 24px; color: var(--terracota); margin-bottom: 4px; }
+    .time-cargo { font-size: 12px; letter-spacing: 0.1em; color: var(--rosa); text-transform: uppercase; margin-bottom: 16px; }
+    .time-bio { font-size: 15px; color: var(--texto-suave); line-height: 1.8; }
+    .parceiras-titulo { font-family: var(--serif); font-size: 22px; color: var(--terracota); margin-bottom: 32px; font-style: italic; }
+    .parceiras-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+    .parceira-card {
+      padding: 28px;
+      background: var(--creme);
+      border-radius: var(--radius);
+      border: 1px solid var(--creme-escuro);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .parceira-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(212,130,106,0.15); }
+    .parceira-icone { width: 44px; height: 44px; margin-bottom: 16px; }
+    .parceira-icone img { width: 44px; height: auto; }
+    .parceira-nome { font-family: var(--serif); font-size: 18px; color: var(--terracota); margin-bottom: 4px; }
+    .parceira-role { font-size: 12px; color: var(--rosa); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+    .parceira-desc { font-size: 14px; color: var(--texto-suave); line-height: 1.7; }
+    .citacao-jardim { text-align: center; font-family: var(--serif); font-size: clamp(20px, 3vw, 28px); font-style: italic; color: var(--terracota); padding: 48px 0 0; opacity: 0.7; }
+
+    /* ── MISSÃO ── */
+    #missao {
+      background: var(--terracota);
+      padding: 112px 0;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    .missao-selo {
+      position: absolute;
+      right: 80px; top: 50%;
+      transform: translateY(-50%);
+      width: 200px;
+      opacity: 0.12;
+    }
+    .missao-selo-left {
+      position: absolute;
+      left: 80px; top: 50%;
+      transform: translateY(-50%) scaleX(-1);
+      width: 200px;
+      opacity: 0.12;
+    }
+    #missao .container { position: relative; }
+    .missao-label { color: rgba(255,255,255,0.55); margin-bottom: 20px; }
+    .missao-text {
+      font-family: var(--serif);
+      font-size: clamp(24px, 4vw, 44px);
+      font-weight: 400;
+      line-height: 1.35;
+      color: var(--branco);
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    /* ── APLICATIVO ── */
+    #aplicativo { background: var(--creme); }
+    .app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .app-features { list-style: none; margin: 28px 0; display: flex; flex-direction: column; gap: 14px; }
+    .app-features li { display: flex; align-items: flex-start; gap: 12px; font-size: 15px; color: var(--texto-suave); }
+    .feature-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--rosa); margin-top: 9px; flex-shrink: 0; }
+    .app-visual { display: flex; align-items: center; justify-content: center; }
+    .phone-mockup {
+      width: 240px; height: 480px;
+      background: var(--branco);
+      border-radius: 36px;
+      border: 8px solid var(--creme-escuro);
+      box-shadow: 0 40px 80px rgba(44,32,24,0.15);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+    .phone-top { background: var(--rosa-fundo); padding: 24px 20px 20px; text-align: center; }
+    .phone-top img { width: 48px; height: auto; margin: 0 auto 10px; }
+    .phone-app-name { font-family: var(--serif); font-size: 15px; color: var(--terracota); }
+    .phone-body { flex: 1; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+    .phone-card { background: var(--creme); border-radius: 10px; padding: 12px; }
+    .phone-card-title { font-weight: 500; color: var(--terracota); margin-bottom: 4px; font-size: 12px; }
+    .phone-card p { font-size: 11px; color: var(--texto-suave); }
+    .app-callout { font-family: var(--serif); font-size: 19px; font-style: italic; color: var(--terracota); border-left: 3px solid var(--rosa); padding-left: 20px; margin-top: 32px; line-height: 1.6; }
+
+    /* ── PRODUTOS ── */
+    #produtos { background: var(--branco); }
+    .produtos-intro { max-width: 560px; margin-bottom: 48px; }
+    .produtos-cta-box {
+      display: flex; align-items: center; justify-content: space-between; gap: 32px;
+      padding: 40px 48px;
+      background: var(--rosa-fundo);
+      border-radius: 20px;
+      border: 1px solid rgba(212,130,106,0.2);
+      flex-wrap: wrap;
+    }
+    .produtos-cta-text { font-family: var(--serif); font-size: 22px; color: var(--terracota); max-width: 380px; line-height: 1.4; }
+    .produtos-cta-sub { font-size: 14px; color: var(--texto-suave); margin-top: 8px; }
+
+    /* ── COMUNIDADE ── */
+    #comunidade { background: linear-gradient(135deg, var(--rosa-fundo) 0%, var(--creme) 60%); text-align: center; }
+    .comunidade-inner { max-width: 680px; margin: 0 auto; }
+    .comunidade-inner .section-text { max-width: 100%; margin: 0 auto; text-align: center; }
+    .comunidade-selo { width: 120px; height: auto; margin: 0 auto 32px; opacity: 0.7; }
+    .comunidade-actions { margin-top: 40px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .comunidade-citacao { font-family: var(--serif); font-size: 16px; font-style: italic; color: var(--rosa); margin-top: 40px; opacity: 0.85; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--texto); color: rgba(255,255,255,0.45); padding: 56px 0; text-align: center; font-size: 13px; }
+    .footer-logo { height: 48px; width: auto; margin: 0 auto 16px; opacity: 0.85; filter: brightness(0) invert(1); }
+    footer p + p { margin-top: 6px; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      .section { padding: 64px 0; }
+      .nav-links, nav > .inner > .btn { display: none; }
+      .hamburger { display: flex; }
+      .sobre-grid { grid-template-columns: 1fr; gap: 40px; }
+      .sobre-circulo { width: 260px; height: 260px; }
+      .sobre-visual { order: -1; }
+      .historia-inner { grid-template-columns: 1fr; gap: 32px; }
+      .historia-sticky { position: static; }
+      .time-fundadora { grid-template-columns: 1fr; gap: 20px; padding: 24px; }
+      .app-grid { grid-template-columns: 1fr; gap: 48px; }
+      .app-visual { order: -1; }
+      .produtos-cta-box { flex-direction: column; padding: 28px; }
+      .missao-selo, .missao-selo-left { display: none; }
+      .hero-ornament-right { opacity: 0.08; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <div class="inner">
+      <a href="#" class="nav-logo">
+        <img src="logo.png" alt="Florescerá" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#historia">Nossa história</a></li>
+        <li><a href="#time">Time</a></li>
+        <li><a href="#aplicativo">Aplicativo</a></li>
+        <li><a href="#produtos">Produtos</a></li>
+        <li><a href="#comunidade">Comunidade</a></li>
+      </ul>
+      <a href="#comunidade" class="btn btn-outline" style="font-size:13px; padding:10px 22px;">Faça parte</a>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#sobre" onclick="closeMobile()">Sobre</a>
+    <a href="#historia" onclick="closeMobile()">Nossa história</a>
+    <a href="#time" onclick="closeMobile()">Time</a>
+    <a href="#aplicativo" onclick="closeMobile()">Aplicativo</a>
+    <a href="#produtos" onclick="closeMobile()">Produtos</a>
+    <a href="#comunidade" onclick="closeMobile()">Comunidade</a>
+    <a href="#comunidade" class="btn btn-primary" style="justify-content:center; margin-top:8px;" onclick="closeMobile()">Faça parte</a>
+  </div>
+
+  <!-- ══ 1. HERO ══ -->
+  <section id="hero">
+    <img src="simbolo.png" alt="" class="hero-ornament-right" aria-hidden="true" />
+    <div class="container">
+      <div class="hero-content reveal">
+        <span class="hero-eyebrow">Bem-vinda</span>
+        <h1 class="hero-title">Florescerá</h1>
+        <p class="hero-subtitle">Desacelere. Habite seu lar.</p>
+        <p class="hero-text">
+          Uma comunidade para mulheres que desejam viver cada estação da vida
+          com propósito, fé e beleza no ordinário.
+        </p>
+        <div class="hero-actions">
+          <a href="#sobre" class="btn btn-primary">Conheça a Florescerá</a>
+          <a href="#comunidade" class="btn btn-outline">Faça parte</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 2. SOBRE ══ -->
+  <section id="sobre" class="section">
+    <div class="container">
+      <div class="sobre-grid">
+        <div class="reveal">
+          <p class="section-label">Quem somos</p>
+          <h2 class="section-title">A beleza das coisas que acontecem todos os dias</h2>
+          <p class="section-text">A Florescerá nasceu de uma convicção simples, mas profunda: existe beleza nas coisas que acontecem todos os dias.</p>
+          <p class="section-text">Vivemos em uma época que valoriza o extraordinário — mas acreditamos que é no ordinário que a vida realmente floresce. Na mesa posta para a família, na oração silenciosa da manhã, no café preparado com amor, na casa que acolhe.</p>
+          <p class="section-text">Mais do que uma marca, a Florescerá é um convite para desacelerar, habitar o lar e reconhecer que Deus também está presente nas tarefas mais simples do dia a dia.</p>
+          <p class="section-text" style="margin-top:20px; font-family: var(--serif); font-style: italic; color: var(--terracota); font-size:18px;">
+            Porque quando uma mulher floresce, tudo ao seu redor floresce também.
+          </p>
+        </div>
+        <div class="sobre-visual reveal" style="transition-delay:0.15s">
+          <div class="sobre-circulo">
+            <img src="simbolo.png" alt="Símbolo Florescerá" />
+            <div class="sobre-badge">
+              "Por meio de produtos, conteúdos e comunidade, inspiramos mulheres a cultivarem lares cheios de amor."
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 3. HISTÓRIA ══ -->
+  <section id="historia" class="section">
+    <div class="container">
+      <div class="historia-inner">
+        <div class="historia-sticky reveal">
+          <img src="icone.png" alt="" class="historia-ornament" aria-hidden="true" />
+          <p class="section-label">Nossa história</p>
+          <h2 class="section-title">Nasceu no secreto</h2>
+        </div>
+        <div class="historia-paragraphs reveal" style="transition-delay:0.1s">
+          <p>A Florescerá não nasceu em uma reunião de negócios ou a partir de uma estratégia de mercado. Ela nasceu no secreto.</p>
+          <p>Em um momento de oração, uma imagem marcou para sempre o coração da fundadora: uma grande rocha caía ao chão e, daquele lugar aparentemente duro e improvável, brotava uma flor.</p>
+          <p>A rocha representava a força, a firmeza e os desafios que muitas mulheres enfrentam ao longo da vida. A flor representava a delicadeza, a beleza e a capacidade de florescer mesmo em terrenos difíceis.</p>
+          <p>Primeiro como uma convicção, depois como um sonho e, por fim, como uma missão.</p>
+          <p class="historia-destaque">A Florescerá existe para lembrar que as tarefas do cotidiano não são pequenas demais para terem valor. Existe dignidade no cuidado do lar, valor na criação dos filhos, beleza na rotina.</p>
+          <p>Por isso, cada produto, conteúdo, ferramenta e projeto carrega a mesma mensagem: Deus se importa com o ordinário. E é justamente ali, nos dias comuns, que muitas das flores mais bonitas da nossa história são cultivadas.</p>
+          <p style="font-family: var(--serif); font-style:italic; color: var(--terracota); font-size:17px;">A Florescerá é o resultado de uma visão, mas também de uma oração: que mulheres encontrem alegria em habitar o lugar onde Deus as plantou e descubram que ainda há muito para florescer.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 4. TIME ══ -->
+  <section id="time" class="section">
+    <div class="container">
+      <div class="reveal">
+        <p class="section-label">Quem constrói</p>
+        <h2 class="section-title">As pessoas por trás da Florescerá</h2>
+      </div>
+      <div class="time-fundadora reveal" style="transition-delay:0.1s">
+        <div class="avatar-box">
+          <img src="simbolo.png" alt="" />
+        </div>
+        <div>
+          <p class="time-nome">Ketlyn Menezes</p>
+          <p class="time-cargo">Fundadora e Idealizadora</p>
+          <p class="time-bio">Esposa, mãe de três filhos, engenheira por formação e apaixonada por comunicação, Ketlyn é a criadora da Florescerá e responsável por conduzir a visão, a mensagem e a essência da marca. A partir de uma experiência marcante com Deus, nasceu o propósito de inspirar mulheres a encontrarem beleza no ordinário, propósito no cuidado com o lar e significado em cada estação da vida. Hoje, ela lidera o desenvolvimento da Florescerá, direcionando conteúdos, projetos, produtos e iniciativas.</p>
+        </div>
+      </div>
+      <p class="parceiras-titulo reveal">Parceiras do Projeto</p>
+      <div class="parceiras-grid">
+        <div class="parceira-card reveal" style="transition-delay:0.05s">
+          <div class="parceira-icone"><img src="icone.png" alt="" /></div>
+          <p class="parceira-nome">Nathália</p>
+          <p class="parceira-role">Naturel Velas · Aromas</p>
+          <p class="parceira-desc">Empreendedora especialista no universo dos aromas, responsável pelo desenvolvimento das fragrâncias e experiências olfativas presentes nas coleções da Florescerá.</p>
+        </div>
+        <div class="parceira-card reveal" style="transition-delay:0.1s">
+          <div class="parceira-icone"><img src="icone.png" alt="" /></div>
+          <p class="parceira-nome">Leonara</p>
+          <p class="parceira-role">Smile Criative · Produtos</p>
+          <p class="parceira-desc">Contribui no desenvolvimento dos produtos, transformando ideias em peças que unem beleza, funcionalidade e propósito. Seu olhar garante que cada detalhe reflita a identidade da marca.</p>
+        </div>
+        <div class="parceira-card reveal" style="transition-delay:0.15s">
+          <div class="parceira-icone"><img src="icone.png" alt="" /></div>
+          <p class="parceira-nome">Juliana Santos Viana</p>
+          <p class="parceira-role">Desenvolvimento · Tecnologia</p>
+          <p class="parceira-desc">Responsável pelo desenvolvimento do Aplicativo Florescerá, unindo tecnologia e propósito para criar uma plataforma de apoio à rotina, família e vida devocional.</p>
+        </div>
+        <div class="parceira-card reveal" style="transition-delay:0.2s">
+          <div class="parceira-icone"><img src="icone.png" alt="" /></div>
+          <p class="parceira-nome">Cleide Ferreira</p>
+          <p class="parceira-role">Educadora Física · Bem-estar</p>
+          <p class="parceira-desc">Parceira da Florescerá na promoção do autocuidado, movimento e bem-estar da mulher em suas diferentes estações de vida.</p>
+        </div>
+      </div>
+      <p class="citacao-jardim reveal">"Nenhum jardim floresce sozinho."</p>
+    </div>
+  </section>
+
+  <!-- ══ 5. MISSÃO ══ -->
+  <section id="missao">
+    <img src="selo.png" alt="" class="missao-selo" aria-hidden="true" />
+    <img src="selo.png" alt="" class="missao-selo-left" aria-hidden="true" />
+    <div class="container">
+      <p class="section-label missao-label reveal">Nossa missão</p>
+      <p class="missao-text reveal" style="transition-delay:0.1s">
+        Cultivar uma geração de mulheres que florescem primeiro dentro de casa
+        e transformam o mundo a partir dele.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ 6. APLICATIVO ══ -->
+  <section id="aplicativo" class="section">
+    <div class="container">
+      <div class="app-grid">
+        <div class="reveal">
+          <p class="section-label">Aplicativo</p>
+          <h2 class="section-title">Uma companhia para cada estação da vida</h2>
+          <p class="section-text">O Aplicativo Florescerá nasceu para caminhar ao lado da mulher em cada estação da vida. Mais do que uma ferramenta de organização, é um espaço de apoio, inspiração e intencionalidade — reunindo em um único lugar recursos que auxiliam no cuidado do lar, da família, da vida espiritual e da rotina pessoal.</p>
+          <ul class="app-features">
+            <li><span class="feature-dot"></span>Ferramentas práticas para organizar o dia a dia</li>
+            <li><span class="feature-dot"></span>Conteúdos exclusivos e devocionais</li>
+            <li><span class="feature-dot"></span>Planejamentos, receitas e recursos práticos</li>
+            <li><span class="feature-dot"></span>Apoio à vida espiritual, familiar e pessoal</li>
+          </ul>
+          <div class="app-callout">"Um lugar para florescer todos os dias 💐"</div>
+        </div>
+        <div class="app-visual reveal" style="transition-delay:0.15s">
+          <div class="phone-mockup">
+            <div class="phone-top">
+              <img src="simbolo.png" alt="Florescerá app" />
+              <p class="phone-app-name">Florescerá</p>
+            </div>
+            <div class="phone-body">
+              <div class="phone-card"><p class="phone-card-title">✦ Devocional de hoje</p><p>Salmos 92:12 — A mulher justa florescerá...</p></div>
+              <div class="phone-card"><p class="phone-card-title">📋 Planejamento semanal</p><p>3 tarefas concluídas hoje</p></div>
+              <div class="phone-card"><p class="phone-card-title">🌿 Receita da semana</p><p>Pão de mel artesanal</p></div>
+              <div class="phone-card"><p class="phone-card-title">💬 Comunidade</p><p>12 novas mensagens</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 7. PRODUTOS ══ -->
+  <section id="produtos" class="section">
+    <div class="container">
+      <div class="reveal">
+        <p class="section-label">Nossos produtos</p>
+        <h2 class="section-title">Criados com propósito</h2>
+      </div>
+      <div class="produtos-intro reveal" style="transition-delay:0.1s">
+        <p class="section-text">Cada produto da Florescerá nasce para transformar momentos comuns em experiências cheias de significado. Desenvolvemos coleções que unem beleza, funcionalidade e intencionalidade — acompanhando mulheres do cuidado com o lar à organização da rotina, da maternidade aos momentos de descanso e devoção.</p>
+        <p class="section-text" style="margin-top:16px">Mais do que objetos, criamos ferramentas e experiências que convidam você a desacelerar, habitar seu lar e encontrar beleza nas pequenas coisas.</p>
+      </div>
+      <div class="produtos-cta-box reveal" style="transition-delay:0.15s">
+        <div>
+          <p class="produtos-cta-text">Conheça nossa coleção completa de produtos</p>
+          <p class="produtos-cta-sub">Catálogo completo disponível em breve</p>
+        </div>
+        <a href="#" class="btn btn-primary">Ver catálogo →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 8. COMUNIDADE ══ -->
+  <section id="comunidade" class="section">
+    <div class="container">
+      <div class="comunidade-inner">
+        <div class="reveal">
+          <img src="selo.png" alt="" class="comunidade-selo" aria-hidden="true" />
+          <p class="section-label" style="text-align:center">Comunidade</p>
+          <h2 class="section-title" style="text-align:center">Florescemos melhor quando caminhamos juntas</h2>
+          <p class="section-text">Acreditamos que nenhuma mulher foi criada para caminhar sozinha. A Comunidade Florescerá nasceu para conectar mulheres que compartilham dos mesmos valores, desafios e desejos: viver com propósito, cultivar lares acolhedores e fortalecer a fé em cada estação da vida.</p>
+          <p class="section-text" style="margin-top:16px">Aqui você encontrará inspiração, acolhimento, conteúdos exclusivos, desafios, encontros e recursos pensados para apoiar sua jornada de forma prática e significativa.</p>
+          <div class="comunidade-actions">
+            <a href="https://wa.me/55SEUNUMERO" class="btn btn-wpp">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2h-.001C6.477 2 2 6.477 2 12c0 1.989.574 3.842 1.567 5.408L2 22l4.704-1.542A9.951 9.951 0 0011.999 22C17.523 22 22 17.523 22 12S17.523 2 11.999 2zm0 18c-1.735 0-3.358-.473-4.752-1.298l-.34-.202-3.529 1.157 1.18-3.412-.222-.35C3.487 14.564 3 13.336 3 12c0-4.963 4.037-9 8.999-9C16.963 3 21 7.037 21 12c0 4.962-4.037 9-9.001 9z"/></svg>
+              Entrar na comunidade
+            </a>
+          </div>
+          <p class="comunidade-citacao">"Porque florescemos melhor quando caminhamos juntas."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <img src="logo.png" alt="Florescerá" class="footer-logo" />
+      <p>© 2025 Florescerá. Todos os direitos reservados.</p>
+      <p style="margin-top:8px">Desenvolvido com ♡ para mulheres que florescem no ordinário.</p>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+    function closeMobile() { mobileMenu.classList.remove('open'); }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
