@@ -181,14 +181,16 @@
       margin-bottom: 56px;
       border-left: 4px solid var(--rosa);
     }
+    /* Foto fundadora */
     .avatar-box {
-      width: 88px; height: 88px;
+      width: 100px; height: 100px;
       border-radius: 50%;
-      background: var(--rosa-fundo);
-      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
       flex-shrink: 0;
+      border: 3px solid var(--rosa-claro);
+      box-shadow: 0 4px 16px rgba(212,130,106,0.2);
     }
-    .avatar-box img { width: 52px; height: auto; }
+    .avatar-box img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
     .time-nome { font-family: var(--serif); font-size: 24px; color: var(--terracota); margin-bottom: 4px; }
     .time-cargo { font-size: 12px; letter-spacing: 0.1em; color: var(--rosa); text-transform: uppercase; margin-bottom: 16px; }
     .time-bio { font-size: 15px; color: var(--texto-suave); line-height: 1.8; }
@@ -202,8 +204,16 @@
       transition: transform 0.2s, box-shadow 0.2s;
     }
     .parceira-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(212,130,106,0.15); }
-    .parceira-icone { width: 44px; height: 44px; margin-bottom: 16px; }
-    .parceira-icone img { width: 44px; height: auto; }
+    /* Foto circular das parceiras */
+    .parceira-foto {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-bottom: 16px;
+      border: 2.5px solid var(--rosa-claro);
+      box-shadow: 0 2px 10px rgba(212,130,106,0.2);
+    }
+    .parceira-foto img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
     .parceira-nome { font-family: var(--serif); font-size: 18px; color: var(--terracota); margin-bottom: 4px; }
     .parceira-role { font-size: 12px; color: var(--rosa); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
     .parceira-desc { font-size: 14px; color: var(--texto-suave); line-height: 1.7; }
@@ -423,7 +433,7 @@
       </div>
       <div class="time-fundadora reveal" style="transition-delay:0.1s">
         <div class="avatar-box">
-          <img src="simbolo.png" alt="" />
+          <img src="ketlyn.jpg" alt="Ketlyn Menezes" />
         </div>
         <div>
           <p class="time-nome">Ketlyn Menezes</p>
@@ -434,25 +444,25 @@
       <p class="parceiras-titulo reveal">Parceiras do Projeto</p>
       <div class="parceiras-grid">
         <div class="parceira-card reveal" style="transition-delay:0.05s">
-          <div class="parceira-icone"><img src="icone.png" alt="" /></div>
+          <div class="parceira-foto"><img src="nathalia.jpg" alt="Nathália" /></div>
           <p class="parceira-nome">Nathália</p>
           <p class="parceira-role">Naturel Velas · Aromas</p>
           <p class="parceira-desc">Empreendedora especialista no universo dos aromas, responsável pelo desenvolvimento das fragrâncias e experiências olfativas presentes nas coleções da Florescerá.</p>
         </div>
         <div class="parceira-card reveal" style="transition-delay:0.1s">
-          <div class="parceira-icone"><img src="icone.png" alt="" /></div>
+          <div class="parceira-foto"><img src="leonara.jpg" alt="Leonara" /></div>
           <p class="parceira-nome">Leonara</p>
           <p class="parceira-role">Smile Criative · Produtos</p>
           <p class="parceira-desc">Contribui no desenvolvimento dos produtos, transformando ideias em peças que unem beleza, funcionalidade e propósito. Seu olhar garante que cada detalhe reflita a identidade da marca.</p>
         </div>
         <div class="parceira-card reveal" style="transition-delay:0.15s">
-          <div class="parceira-icone"><img src="icone.png" alt="" /></div>
+          <div class="parceira-foto"><img src="juliana.jpg" alt="Juliana Santos Viana" /></div>
           <p class="parceira-nome">Juliana Santos Viana</p>
           <p class="parceira-role">Desenvolvimento · Tecnologia</p>
           <p class="parceira-desc">Responsável pelo desenvolvimento do Aplicativo Florescerá, unindo tecnologia e propósito para criar uma plataforma de apoio à rotina, família e vida devocional.</p>
         </div>
         <div class="parceira-card reveal" style="transition-delay:0.2s">
-          <div class="parceira-icone"><img src="icone.png" alt="" /></div>
+          <div class="parceira-foto"><img src="cleide.jpg" alt="Cleide Ferreira" /></div>
           <p class="parceira-nome">Cleide Ferreira</p>
           <p class="parceira-role">Educadora Física · Bem-estar</p>
           <p class="parceira-desc">Parceira da Florescerá na promoção do autocuidado, movimento e bem-estar da mulher em suas diferentes estações de vida.</p>
