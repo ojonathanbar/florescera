@@ -387,25 +387,27 @@
       pointer-events: none;
       z-index: 0;
     }
+    /* Cada camada é só a imagem PNG posicionada livremente — sem container colorido */
     .petalas-layer {
       position: absolute;
-      width: 115%;
-      height: 115%;
-      top: -7.5%;
-      left: -7.5%;
+      inset: -8%;          /* margem extra pra parallax não cortar */
       will-change: transform;
       transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
     .petalas-layer img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: contain;   /* mantém proporção sem recortar */
       object-position: center;
+      /* garante que a transparência do PNG seja respeitada */
+      mix-blend-mode: normal;
+      background: transparent;
     }
     .petalas-front { transform: translate(0px, 0px); }
     .petalas-back  { transform: translate(0px, 0px); opacity: 0.55; }
-    .petalas-wrap { animation: petal-in 1.4s ease forwards; }
     @keyframes petal-in { from { opacity:0; } to { opacity:1; } }
+    .petalas-wrap { animation: petal-in 1.2s ease forwards; }
   </style>
 </head>
 <body>
