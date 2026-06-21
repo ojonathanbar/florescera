@@ -717,49 +717,35 @@
     aboutLayout();
     window.addEventListener('resize', aboutLayout, { passive: true });
 
-    // Parallax petalas — mouse (desktop) + gyroscope (mobile)
-    const petalSections = document.querySelectorAll('[data-petalas]');
-    const layers = document.querySelectorAll('.petalas-layer');
+    // ── PARALLAX DE SCROLL — mobile first ──
+    // Cada camada tem data-depth: valores menores = mais lento = mais ao fundo
+    (function() {
+      const layers = document.querySelectorAll('.petalas-layer');
+      if (!layers.length) return;
 
-    function applyParallax(xFactor, yFactor) {
-      layers.forEach(layer => {
-        const depth = parseFloat(layer.dataset.depth) || 1;
-        const maxMove = 28 * depth;
-        const tx = xFactor * maxMove;
-        const ty = yFactor * maxMove;
-        layer.style.transform = 'translate(' + tx + 'px, ' + ty + 'px)';
-      });
-    }
+      let ticking = false;
 
-    // Desktop: mouse move
-    document.addEventListener('mousemove', (e) => {
-      const cx = window.innerWidth / 2;
-      const cy = window.innerHeight / 2;
-      const xFactor = (e.clientX - cx) / cx;
-      const yFactor = (e.clientY - cy) / cy;
-      applyParallax(xFactor * -1, yFactor * -1);
-    }, { passive: true });
+      function updateParallax() {
+        const scrollY = window.scrollY;
+        layers.forEach(function(layer) {
+          const depth  = parseFloat(layer.dataset.depth) || 0.5;
+          // Velocidade: fundo se move menos, frente se move mais
+          const moveY  = scrollY * depth * 0.18;
+          layer.style.transform = 'translateY(' + moveY + 'px)';
+        });
+        ticking = false;
+      }
 
-    // Mobile: giroscópio
-    if (window.DeviceOrientationEvent) {
-      window.addEventListener('deviceorientation', (e) => {
-        const xFactor = (e.gamma || 0) / 45;  // -1 a 1
-        const yFactor = ((e.beta || 0) - 45) / 45;
-        applyParallax(xFactor * -1, yFactor * -0.5);
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          requestAnimationFrame(updateParallax);
+          ticking = true;
+        }
       }, { passive: true });
-    }
 
-    // Scroll parallax vertical suave
-    window.addEventListener('scroll', () => {
-      const scrolled = window.scrollY;
-      layers.forEach(layer => {
-        const depth = parseFloat(layer.dataset.depth) || 1;
-        const ty = scrolled * 0.08 * depth;
-        const current = layer.style.transform || 'translate(0px, 0px)';
-        const tx = current.match(/translate\(([^,]+),/) ? current.match(/translate\(([^,]+),/)[1] : '0px';
-        layer.style.transform = 'translate(' + tx + ', ' + ty + 'px)';
-      });
-    }, { passive: true });
+      // Estado inicial
+      updateParallax();
+    }());
   </script>
 </body>
 </html>
