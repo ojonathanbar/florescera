@@ -379,35 +379,45 @@
     .footer-logo { height: 44px; width: auto; margin: 0 auto 14px; filter: brightness(0) invert(1); opacity: 0.8; }
     footer p + p { margin-top: 6px; }
 
-    /* PETALAS PARALLAX */
+    /* ── PETALAS PARALLAX — scroll based, mobile first ── */
     .petalas-wrap {
       position: absolute;
       inset: 0;
+      /* espaço extra vertical para o parallax deslizar sem cortar */
+      top: -15%;
+      height: 130%;
       overflow: hidden;
       pointer-events: none;
       z-index: 0;
     }
-    /* Cada camada é só a imagem PNG posicionada livremente — sem container colorido */
     .petalas-layer {
       position: absolute;
-      inset: -8%;          /* margem extra pra parallax não cortar */
+      inset: 0;
       will-change: transform;
-      transition: transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      /* sem transition — requestAnimationFrame já é suave */
     }
     .petalas-layer img {
       position: absolute;
       top: 0; left: 0;
-      width: 100%; height: 100%;
-      object-fit: contain;   /* mantém proporção sem recortar */
+      width: 100%;
+      height: 100%;
+      /* contain preserva transparência PNG sem fundo */
+      object-fit: contain;
       object-position: center;
-      /* garante que a transparência do PNG seja respeitada */
-      mix-blend-mode: normal;
       background: transparent;
     }
-    .petalas-front { transform: translate(0px, 0px); }
-    .petalas-back  { transform: translate(0px, 0px); opacity: 0.55; }
-    @keyframes petal-in { from { opacity:0; } to { opacity:1; } }
-    .petalas-wrap { animation: petal-in 1.2s ease forwards; }
+    /* camada de fundo: mais lenta e mais transparente */
+    .petalas-back { opacity: 0.45; }
+    /* camada da frente: mais rápida e mais visível */
+    
+
+    /* Entrada suave */
+    @keyframes petal-in { from { opacity: 0; } to { opacity: 1; } }
+    .petalas-wrap { animation: petal-in 1.4s ease forwards; }
+
+    @media (max-width: 768px) {
+      .petalas-layer { opacity: 0.55; }
+    }
   </style>
 </head>
 <body>
@@ -447,10 +457,7 @@
   <section id="hero">
     <img src="simbolo.png" alt="" class="hero-ornament" aria-hidden="true" loading="eager" />
     <div class="petalas-wrap" aria-hidden="true">
-      <div class="petalas-layer petalas-back" data-depth="0.4">
-        <img src="petalas1.png" alt="" loading="eager" />
-      </div>
-      <div class="petalas-layer petalas-front" data-depth="1">
+      <div class="petalas-layer" data-depth="0.4">
         <img src="petalas1.png" alt="" loading="eager" />
       </div>
     </div>
@@ -632,11 +639,8 @@
 
   <!-- ══ 8. COMUNIDADE ══ -->
   <section id="comunidade" class="section" style="position:relative; overflow:hidden;">
-    <div class="petalas-wrap" aria-hidden="true" style="opacity:0.7">
-      <div class="petalas-layer petalas-back" data-depth="0.3">
-        <img src="petalas2.png" alt="" loading="lazy" />
-      </div>
-      <div class="petalas-layer petalas-front" data-depth="0.8">
+    <div class="petalas-wrap" aria-hidden="true">
+      <div class="petalas-layer" data-depth="0.3">
         <img src="petalas2.png" alt="" loading="lazy" />
       </div>
     </div>
@@ -650,7 +654,7 @@
           <p class="section-text">Acreditamos que nenhuma mulher foi criada para caminhar sozinha. A Comunidade Florescerá nasceu para conectar mulheres que compartilham dos mesmos valores, desafios e desejos.</p>
           <p class="section-text" style="margin-top:14px">Aqui você encontrará inspiração, acolhimento, conteúdos exclusivos, desafios e recursos pensados para apoiar sua jornada de forma prática e significativa.</p>
           <div class="comunidade-actions">
-            <a href="https://wa.me/5541992781452" class="btn btn-wpp">
+            <a href="https://wa.me/55SEUNUMERO" class="btn btn-wpp">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="white" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2h-.001C6.477 2 2 6.477 2 12c0 1.989.574 3.842 1.567 5.408L2 22l4.704-1.542A9.951 9.951 0 0011.999 22C17.523 22 22 17.523 22 12S17.523 2 11.999 2zm0 18c-1.735 0-3.358-.473-4.752-1.298l-.34-.202-3.529 1.157 1.18-3.412-.222-.35C3.487 14.564 3 13.336 3 12c0-4.963 4.037-9 8.999-9C16.963 3 21 7.037 21 12c0 4.962-4.037 9-9.001 9z"/></svg>
               Entrar na comunidade
             </a>
