@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Florescerá — Habite seu lar</title>
+  <link rel="icon" type="image/png" href="icone.png" />
+  <link rel="apple-touch-icon" href="icone.png" />
   <meta name="description" content="Uma comunidade para mulheres que desejam viver cada estação da vida com propósito, fé e beleza no ordinário." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -379,46 +381,36 @@
     .footer-logo { height: 44px; width: auto; margin: 0 auto 14px; filter: brightness(0) invert(1); opacity: 0.8; }
     footer p + p { margin-top: 6px; }
 
-    /* ── PETALAS PARALLAX — scroll based, mobile first ── */
+    /* ── PETALAS PARALLAX — mouse + touch + scroll ── */
     .petalas-wrap {
       position: absolute;
       inset: 0;
-      /* espaço extra vertical para o parallax deslizar sem cortar */
-      top: -15%;
-      height: 130%;
       overflow: hidden;
       pointer-events: none;
       z-index: 0;
     }
     .petalas-layer {
       position: absolute;
-      inset: 0;
+      /* margem extra pra não cortar nas bordas ao mover */
+      top: -10%; left: -8%;
+      width: 116%; height: 120%;
       will-change: transform;
-      /* sem transition — requestAnimationFrame já é suave */
     }
     .petalas-layer img {
       position: absolute;
       top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      /* contain preserva transparência PNG sem fundo */
+      width: 100%; height: 100%;
       object-fit: contain;
       object-position: center;
       background: transparent;
     }
-    /* camada de fundo: mais lenta e mais transparente */
-    .petalas-back { opacity: 0.45; }
-    /* camada da frente: mais rápida e mais visível */
-    
-
-    /* Entrada suave */
-    @keyframes petal-in { from { opacity: 0; } to { opacity: 1; } }
-    .petalas-wrap { animation: petal-in 1.4s ease forwards; }
-
+    .petalas-layer { opacity: 0.82; }
+    @keyframes petal-in { from { opacity:0; } to { opacity:1; } }
+    .petalas-wrap { animation: petal-in 1.2s ease forwards; }
     @media (max-width: 768px) {
-      .petalas-layer { opacity: 0.55; }
+      .petalas-layer { opacity: 0.60; }
     }
-  </style>
+    </style>
 </head>
 <body>
 
@@ -721,34 +713,69 @@
     aboutLayout();
     window.addEventListener('resize', aboutLayout, { passive: true });
 
-    // ── PARALLAX DE SCROLL — mobile first ──
-    // Cada camada tem data-depth: valores menores = mais lento = mais ao fundo
-    (function() {
+    // ── PARALLAX PÉTALAS — mouse (desktop) + touch (mobile) + scroll ──
+    (function () {
       const layers = document.querySelectorAll('.petalas-layer');
       if (!layers.length) return;
 
-      let ticking = false;
+      // Limites de movimento em px
+      const MAX_MOUSE = 22;
+      const MAX_TOUCH = 14;
+      const SCROLL_FACTOR = 0.12;
 
-      function updateParallax() {
-        const scrollY = window.scrollY;
-        layers.forEach(function(layer) {
-          const depth  = parseFloat(layer.dataset.depth) || 0.5;
-          // Velocidade: fundo se move menos, frente se move mais
-          const moveY  = scrollY * depth * 0.18;
-          layer.style.transform = 'translateY(' + moveY + 'px)';
+      // Estado atual de cada eixo
+      var mouseX = 0, mouseY = 0;
+      var touchX = 0, touchY = 0;
+      var scrollY = 0;
+      var ticking = false;
+
+      function render() {
+        layers.forEach(function (layer) {
+          var depth = parseFloat(layer.dataset.depth) || 0.5;
+          var tx = (mouseX + touchX) * depth;
+          var ty = (mouseY + touchY) * depth + scrollY * SCROLL_FACTOR * depth;
+          layer.style.transform = 'translate(' + tx + 'px, ' + ty + 'px)';
         });
         ticking = false;
       }
 
-      window.addEventListener('scroll', function() {
-        if (!ticking) {
-          requestAnimationFrame(updateParallax);
-          ticking = true;
-        }
+      function requestRender() {
+        if (!ticking) { requestAnimationFrame(render); ticking = true; }
+      }
+
+      // Mouse (desktop)
+      document.addEventListener('mousemove', function (e) {
+        var cx = window.innerWidth / 2;
+        var cy = window.innerHeight / 2;
+        mouseX = ((e.clientX - cx) / cx) * MAX_MOUSE * -1;
+        mouseY = ((e.clientY - cy) / cy) * MAX_MOUSE * -1;
+        requestRender();
+      }, { passive: true });
+
+      // Touch (mobile) — usa o delta do toque em relação ao centro da tela
+      document.addEventListener('touchmove', function (e) {
+        var t = e.touches[0];
+        var cx = window.innerWidth / 2;
+        var cy = window.innerHeight / 2;
+        touchX = ((t.clientX - cx) / cx) * MAX_TOUCH * -1;
+        touchY = ((t.clientY - cy) / cy) * MAX_TOUCH * -1;
+        requestRender();
+      }, { passive: true });
+
+      document.addEventListener('touchend', function () {
+        // Volta suavemente ao centro
+        touchX = 0; touchY = 0;
+        requestRender();
+      }, { passive: true });
+
+      // Scroll parallax vertical
+      window.addEventListener('scroll', function () {
+        scrollY = window.scrollY;
+        requestRender();
       }, { passive: true });
 
       // Estado inicial
-      updateParallax();
+      render();
     }());
   </script>
 </body>
