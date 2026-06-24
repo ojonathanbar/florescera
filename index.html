@@ -423,7 +423,84 @@
       }
       .petalas-layer { opacity: 0.55; }
     }
-    </style>
+  
+    /* ── BANNER EM BREVE ── */
+    .banner-breve {
+      margin-top: 32px;
+      background: linear-gradient(135deg, var(--rosa-fundo) 0%, var(--creme-escuro) 100%);
+      border: 1px solid rgba(212,130,106,0.25);
+      border-radius: 20px;
+      padding: 28px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .banner-breve::before {
+      content: '';
+      position: absolute;
+      top: -30px; right: -30px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: rgba(212,130,106,0.08);
+    }
+    .banner-breve::after {
+      content: '';
+      position: absolute;
+      bottom: -20px; left: -20px;
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: rgba(212,130,106,0.06);
+    }
+    .banner-breve-inner {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+    .banner-breve-icon {
+      width: 56px;
+      height: auto;
+      flex-shrink: 0;
+      opacity: 0.75;
+    }
+    .banner-breve-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--rosa);
+      margin-bottom: 4px;
+    }
+    .banner-breve-titulo {
+      font-family: var(--serif);
+      font-size: clamp(22px, 4vw, 32px);
+      font-style: italic;
+      color: var(--terracota);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .banner-breve-sub {
+      font-size: 14px;
+      color: var(--texto-suave);
+      line-height: 1.6;
+      max-width: 400px;
+    }
+    /* Comunidade: centralizado */
+    .banner-breve-comunidade {
+      text-align: left;
+      margin-top: 32px;
+    }
+    .banner-breve-comunidade .banner-breve-icon {
+      width: 64px;
+    }
+
+    @media (max-width: 600px) {
+      .banner-breve { padding: 22px 20px; }
+      .banner-breve-inner { gap: 16px; }
+      .banner-breve-icon { width: 44px; }
+      .banner-breve-comunidade .banner-breve-icon { width: 52px; }
+    }
+  </style>
 </head>
 <body>
 
@@ -632,12 +709,18 @@
         <p class="section-text">Cada produto da Florescerá nasce para transformar momentos comuns em experiências cheias de significado — unindo beleza, funcionalidade e intencionalidade.</p>
         <p class="section-text" style="margin-top:14px">Mais do que objetos, criamos experiências que convidam você a desacelerar, habitar seu lar e encontrar beleza nas pequenas coisas.</p>
       </div>
-      <div class="produtos-cta-box reveal" style="transition-delay:0.1s">
-        <div>
-          <p class="produtos-cta-text">Conheça nossa coleção completa de produtos</p>
-          <p class="produtos-cta-sub">Catálogo completo disponível em breve</p>
+      <div class="banner-breve reveal" style="transition-delay:0.1s">
+        <div class="banner-breve-inner">
+          <img src="icone.png" alt="" class="banner-breve-icon" aria-hidden="true" />
+          <div>
+            <p class="banner-breve-label">Novidades chegando</p>
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:2px;">
+              <img src="rose.png" alt="" style="width:36px; height:auto; opacity:0.9;" aria-hidden="true" />
+              <p class="banner-breve-titulo" style="margin-bottom:0">Em breve</p>
+            </div>
+            <p class="banner-breve-sub">Nossa coleção completa de produtos estará disponível em breve. Fique atenta!</p>
+          </div>
         </div>
-        <a href="#" class="btn btn-primary">Ver catálogo →</a>
       </div>
     </div>
   </section>
@@ -658,11 +741,18 @@
           <h2 class="section-title" style="text-align:center">Florescemos melhor quando caminhamos juntas</h2>
           <p class="section-text">Acreditamos que nenhuma mulher foi criada para caminhar sozinha. A Comunidade Florescerá nasceu para conectar mulheres que compartilham dos mesmos valores, desafios e desejos.</p>
           <p class="section-text" style="margin-top:14px">Aqui você encontrará inspiração, acolhimento, conteúdos exclusivos, desafios e recursos pensados para apoiar sua jornada de forma prática e significativa.</p>
-          <div class="comunidade-actions">
-            <a href="https://wa.me/5541992781452" class="btn btn-wpp">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="white" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2h-.001C6.477 2 2 6.477 2 12c0 1.989.574 3.842 1.567 5.408L2 22l4.704-1.542A9.951 9.951 0 0011.999 22C17.523 22 22 17.523 22 12S17.523 2 11.999 2zm0 18c-1.735 0-3.358-.473-4.752-1.298l-.34-.202-3.529 1.157 1.18-3.412-.222-.35C3.487 14.564 3 13.336 3 12c0-4.963 4.037-9 8.999-9C16.963 3 21 7.037 21 12c0 4.962-4.037 9-9.001 9z"/></svg>
-              Entrar na comunidade
-            </a>
+          <div class="banner-breve banner-breve-comunidade reveal" style="transition-delay:0.15s">
+            <div class="banner-breve-inner">
+              <img src="selo.png" alt="" class="banner-breve-icon" aria-hidden="true" />
+              <div>
+                <p class="banner-breve-label">Comunidade</p>
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:2px;">
+                  <img src="rose.png" alt="" style="width:36px; height:auto; opacity:0.9;" aria-hidden="true" />
+                  <p class="banner-breve-titulo" style="margin-bottom:0">Em breve</p>
+                </div>
+                <p class="banner-breve-sub">Nossa comunidade está sendo preparada com muito cuidado. Em breve você poderá fazer parte!</p>
+              </div>
+            </div>
           </div>
           <p class="comunidade-citacao">"Porque florescemos melhor quando caminhamos juntas."</p>
         </div>
