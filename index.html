@@ -163,6 +163,29 @@
       background: var(--creme-escuro);
     }
     .video-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .video-cover {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      background-size: cover; background-position: center;
+      border: 0; padding: 0; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .video-play-btn {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: rgba(44,32,24,0.55); border: 2px solid rgba(255,255,255,0.85);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.18s, background 0.18s; pointer-events: none;
+    }
+    .video-cover:hover .video-play-btn { transform: scale(1.06); background: rgba(212,130,106,0.85); }
+    .video-play-btn svg { width: 22px; height: 22px; margin-left: 3px; fill: #fff; }
+    .video-pause-btn {
+      position: absolute; right: 14px; bottom: 14px; z-index: 5;
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(0,0,0,0.45); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .video-embed:hover .video-pause-btn, .video-pause-btn.visible { opacity: 1; }
+    .video-pause-btn svg { width: 15px; height: 15px; fill: #fff; }
 
     .hero-content { position: relative; z-index: 1; }
     .hero-eyebrow {
@@ -604,8 +627,10 @@
           </div>
         </div>
         <div class="hero-video-wrap reveal" style="transition-delay:0.15s">
-          <div class="video-embed">
-            <iframe src="https://www.youtube.com/embed/0uH7jB56rfI" title="Florescerá" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          <div class="video-embed" data-video-id="0uH7jB56rfI">
+            <button class="video-cover" style="background-image:url('https://i.ytimg.com/vi/0uH7jB56rfI/hqdefault.jpg')" aria-label="Reproduzir vídeo">
+              <span class="video-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+            </button>
           </div>
         </div>
       </div>
@@ -729,8 +754,10 @@
   <section id="video-app" class="video-section" style="background: var(--creme);">
     <div class="container">
       <div class="video-embed-wrap reveal">
-        <div class="video-embed">
-          <iframe src="https://www.youtube.com/embed/ASF2FUimnV8" title="Florescerá" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        <div class="video-embed" data-video-id="ASF2FUimnV8">
+          <button class="video-cover" style="background-image:url('https://i.ytimg.com/vi/ASF2FUimnV8/hqdefault.jpg')" aria-label="Reproduzir vídeo">
+            <span class="video-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          </button>
         </div>
       </div>
     </div>
@@ -929,6 +956,76 @@
 
       // Estado inicial
       render();
+    }());
+
+    // ── VÍDEOS — capa própria (sem título/logo do YouTube) + player com só play/pause ──
+    (function () {
+      const covers = document.querySelectorAll('.video-embed .video-cover');
+      if (!covers.length) return;
+
+      let apiReady = false;
+      const pending = [];
+
+      function loadApi() {
+        if (document.getElementById('yt-iframe-api')) return;
+        const tag = document.createElement('script');
+        tag.id = 'yt-iframe-api';
+        tag.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(tag);
+      }
+
+      window.onYouTubeIframeAPIReady = function () {
+        apiReady = true;
+        pending.forEach(function (fn) { fn(); });
+        pending.length = 0;
+      };
+
+      const ICON_PLAY = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+      const ICON_PAUSE = '<svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+
+      function createPlayer(wrap, videoId) {
+        const mount = document.createElement('div');
+        wrap.appendChild(mount);
+
+        const pauseBtn = document.createElement('button');
+        pauseBtn.className = 'video-pause-btn';
+        pauseBtn.type = 'button';
+        pauseBtn.setAttribute('aria-label', 'Pausar ou reproduzir');
+        pauseBtn.innerHTML = ICON_PAUSE;
+        wrap.appendChild(pauseBtn);
+
+        const player = new YT.Player(mount, {
+          videoId: videoId,
+          playerVars: {
+            controls: 0, rel: 0, modestbranding: 1, iv_load_policy: 3,
+            playsinline: 1, autoplay: 1, fs: 0, disablekb: 1
+          },
+          events: {
+            onReady: function () { pauseBtn.classList.add('visible'); },
+            onStateChange: function (e) {
+              pauseBtn.innerHTML = (e.data === YT.PlayerState.PLAYING) ? ICON_PAUSE : ICON_PLAY;
+            }
+          }
+        });
+
+        pauseBtn.addEventListener('click', function () {
+          if (player.getPlayerState() === YT.PlayerState.PLAYING) player.pauseVideo();
+          else player.playVideo();
+        });
+      }
+
+      covers.forEach(function (cover) {
+        cover.addEventListener('click', function () {
+          const wrap = cover.closest('.video-embed');
+          const videoId = wrap.dataset.videoId;
+          cover.remove();
+          const start = function () { createPlayer(wrap, videoId); };
+          if (apiReady && window.YT && YT.Player) start();
+          else pending.push(start);
+        }, { once: true });
+      });
+
+      loadApi();
     }());
   </script>
 </body>
