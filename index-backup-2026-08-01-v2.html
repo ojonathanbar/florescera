@@ -140,12 +140,6 @@
       opacity: 0.10;
       pointer-events: none;
     }
-    .hero-inner { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 28px; }
-    .hero-video-wrap { display: flex; justify-content: center; }
-    @media (min-width: 769px) {
-      .hero-inner { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 48px; align-items: center; }
-      .hero-video-wrap { justify-content: flex-end; }
-    }
     .hero-content { position: relative; z-index: 1; }
     .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 10px;
@@ -345,20 +339,11 @@
     .phone-card { background: var(--creme); border-radius: 8px; padding: 10px; }
     .phone-card-title { font-weight: 500; color: var(--terracota); margin-bottom: 3px; font-size: 11px; }
     .phone-card p { font-size: 10px; color: var(--texto-suave); }
-    .app-screenshot {
-      width: 240px;
-      border-radius: 28px;
-      overflow: hidden;
-      box-shadow: 0 32px 64px rgba(44,32,24,0.12);
-      border: 7px solid var(--creme-escuro);
-    }
-    .app-screenshot img { width: 100%; height: auto; display: block; }
 
     @media (min-width: 769px) {
       .app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
       .app-visual { margin-bottom: 0; }
       .phone-mockup { width: 240px; height: 460px; }
-      .app-screenshot { width: 280px; }
       .app-features li { font-size: 15px; }
     }
 
@@ -574,21 +559,25 @@
     </div>
 
     <div class="container">
-      <div class="hero-inner">
-        <div class="hero-content reveal">
-          <span class="hero-eyebrow">Bem-vinda</span>
-          <h1 class="hero-title">Florescerá</h1>
-          <p class="hero-subtitle">Desacelere. Habite seu lar.</p>
-          <p class="hero-text">Uma comunidade para mulheres que desejam viver cada estação da vida com propósito, fé e beleza no ordinário.</p>
-          <div class="hero-actions">
-            <a href="#sobre" class="btn btn-primary">Conheça a Florescerá</a>
-            <a href="#comunidade" class="btn btn-outline">Faça parte</a>
-          </div>
+      <div class="hero-content reveal" style="position:relative; z-index:2;">
+        <span class="hero-eyebrow">Bem-vinda</span>
+        <h1 class="hero-title">Florescerá</h1>
+        <p class="hero-subtitle">Desacelere. Habite seu lar.</p>
+        <p class="hero-text">Uma comunidade para mulheres que desejam viver cada estação da vida com propósito, fé e beleza no ordinário.</p>
+        <div class="hero-actions">
+          <a href="#sobre" class="btn btn-primary">Conheça a Florescerá</a>
+          <a href="#comunidade" class="btn btn-outline">Faça parte</a>
         </div>
-        <div class="hero-video-wrap reveal" style="transition-delay:0.15s">
-          <div class="video-embed">
-            <iframe src="https://www.youtube.com/embed/0uH7jB56rfI" title="Florescerá" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-          </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ VÍDEO — boas-vindas (entre Bem-vinda e Quem somos) ══ -->
+  <section id="video-boas-vindas" class="video-section">
+    <div class="container">
+      <div class="video-embed-wrap reveal">
+        <div class="video-embed">
+          <iframe src="https://www.youtube.com/embed/0uH7jB56rfI" title="Florescerá" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
         </div>
       </div>
     </div>
@@ -723,8 +712,17 @@
     <div class="container">
       <div class="app-grid">
         <div class="app-visual reveal">
-          <div class="app-screenshot">
-            <img src="app-premium-screenshot.jpg" alt="Tela do Aplicativo Florescerá — plano Premium" loading="lazy" />
+          <div class="phone-mockup">
+            <div class="phone-top">
+              <img src="simbolo.png" alt="App Florescerá" loading="lazy" />
+              <p class="phone-app-name">Florescerá</p>
+            </div>
+            <div class="phone-body">
+              <div class="phone-card"><p class="phone-card-title">✦ Devocional de hoje</p><p>Salmos 92:12 — A mulher justa florescerá...</p></div>
+              <div class="phone-card"><p class="phone-card-title">📋 Planejamento semanal</p><p>3 tarefas concluídas hoje</p></div>
+              <div class="phone-card"><p class="phone-card-title">🌿 Receita da semana</p><p>Pão de mel artesanal</p></div>
+              <div class="phone-card"><p class="phone-card-title">💬 Comunidade</p><p>12 novas mensagens</p></div>
+            </div>
           </div>
         </div>
         <div class="reveal" style="transition-delay:0.1s">
@@ -740,12 +738,13 @@
           <div class="app-callout">"Um lugar para florescer todos os dias 💐"</div>
         </div>
       </div>
+      <p style="margin-top:24px; font-size:12px; color:var(--texto-suave); opacity:0.7;"><!-- TODO Papo de Alcance: trocar o mockup de celular acima pela foto real que a Ketlyn enviou, assim que recebermos o arquivo. --></p>
     </div>
   </section>
 
   <!-- ══ 7. PRODUTOS ══ -->
   <section id="produtos" class="section">
-    <img src="simbolo-branco.png" alt="" class="produtos-bg-symbol" aria-hidden="true" loading="lazy" />
+    <img src="simbolo.png" alt="" class="produtos-bg-symbol" aria-hidden="true" loading="lazy" />
     <div class="container">
       <div class="reveal">
         <p class="section-label">Nossos produtos</p>
