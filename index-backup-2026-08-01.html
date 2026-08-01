@@ -153,23 +153,6 @@
     .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
     /* ══════════════════════════════════════
-       VÍDEOS EMBUTIDOS (YouTube)
-    ══════════════════════════════════════ */
-    .video-section { padding: 48px 0; }
-    .video-embed-wrap { display: flex; justify-content: center; }
-    .video-embed {
-      position: relative;
-      width: 100%;
-      max-width: 320px;
-      aspect-ratio: 9 / 16;
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow: 0 24px 56px rgba(44,32,24,0.18);
-      background: var(--creme-escuro);
-    }
-    .video-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-
-    /* ══════════════════════════════════════
        SOBRE
     ══════════════════════════════════════ */
     #sobre { background: var(--branco); }
@@ -223,8 +206,7 @@
     /* ══════════════════════════════════════
        HISTÓRIA
     ══════════════════════════════════════ */
-    #historia { background: var(--creme); position: relative; overflow: hidden; }
-    #historia .container { position: relative; z-index: 1; }
+    #historia { background: var(--creme); }
     .historia-ornament { width: 64px; height: auto; margin-bottom: 20px; opacity: 0.5; }
     .historia-paragraphs p { font-size: 15px; color: var(--texto-suave); line-height: 1.9; margin-bottom: 18px; }
     .historia-paragraphs p:first-child { font-family: var(--serif); font-size: 17px; color: var(--texto); }
@@ -367,18 +349,7 @@
     /* ══════════════════════════════════════
        PRODUTOS
     ══════════════════════════════════════ */
-    #produtos { background: var(--branco); position: relative; overflow: hidden; }
-    #produtos .container { position: relative; z-index: 1; }
-    .produtos-bg-symbol {
-      position: absolute;
-      right: -90px; top: 50%;
-      transform: translateY(-50%);
-      width: 440px;
-      max-width: 60vw;
-      opacity: 0.06;
-      pointer-events: none;
-      z-index: 0;
-    }
+    #produtos { background: var(--branco); }
     .produtos-cta-box {
       display: flex; flex-direction: column; gap: 20px;
       padding: 28px; background: var(--rosa-fundo);
@@ -437,7 +408,6 @@
       background: transparent;
     }
     .petalas-layer { opacity: 0.82; }
-    .petalas-layer.petalas-suave { opacity: 0.14; }
     @keyframes petal-in { from { opacity:0; } to { opacity:1; } }
     .petalas-wrap { animation: petal-in 1.2s ease forwards; }
 
@@ -452,7 +422,6 @@
         object-position: center center;
       }
       .petalas-layer { opacity: 0.55; }
-      .petalas-layer.petalas-suave { opacity: 0.10; }
     }
 
     /* ── BANNER EM BREVE ── */
@@ -589,17 +558,6 @@
     </div>
   </section>
 
-  <!-- ══ VÍDEO — boas-vindas (entre Bem-vinda e Quem somos) ══ -->
-  <section id="video-boas-vindas" class="video-section">
-    <div class="container">
-      <div class="video-embed-wrap reveal">
-        <div class="video-embed">
-          <iframe src="https://www.youtube.com/embed/0uH7jB56rfI" title="Florescerá" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ══ 2. SOBRE ══ -->
   <section id="sobre" class="section">
     <div class="container">
@@ -629,11 +587,6 @@
 
   <!-- ══ 3. HISTÓRIA ══ -->
   <section id="historia" class="section">
-    <div class="petalas-wrap" aria-hidden="true">
-      <div class="petalas-layer petalas-suave" data-depth="0.2">
-        <img src="petalas1.png" alt="" loading="lazy" />
-      </div>
-    </div>
     <div class="container">
       <div class="historia-inner">
         <div class="historia-sticky reveal">
@@ -643,7 +596,7 @@
         </div>
         <div class="historia-paragraphs reveal" style="transition-delay:0.1s">
           <p>A Florescerá não nasceu em uma reunião de negócios ou a partir de uma estratégia de mercado. Ela nasceu no secreto.</p>
-          <p style="font-family:var(--serif); font-style:italic; color:var(--texto);">Em um momento de oração, uma imagem marcou para sempre o coração da fundadora: uma grande rocha caía ao chão e, daquele lugar aparentemente duro e improvável, brotava uma flor.</p>
+          <p>Em um momento de oração, uma imagem marcou para sempre o coração da fundadora: uma grande rocha caía ao chão e, daquele lugar aparentemente duro e improvável, brotava uma flor.</p>
           <p>A rocha representava a força, a firmeza e os desafios que muitas mulheres enfrentam ao longo da vida. A flor representava a delicadeza, a beleza e a capacidade de florescer mesmo em terrenos difíceis.</p>
           <p>Primeiro como uma convicção, depois como um sonho e, por fim, como uma missão.</p>
           <p class="historia-destaque">A Florescerá existe para lembrar que as tarefas do cotidiano não são pequenas demais para terem valor. Existe dignidade no cuidado do lar, valor na criação dos filhos, beleza na rotina.</p>
@@ -659,7 +612,7 @@
     <div class="container">
       <div class="reveal">
         <p class="section-label">Quem constrói</p>
-        <h2 class="section-title">As mulheres por trás da Florescerá</h2>
+        <h2 class="section-title">As pessoas por trás da Florescerá</h2>
       </div>
       <div class="time-fundadora reveal" style="transition-delay:0.1s">
         <div class="avatar-box">
@@ -713,17 +666,6 @@
     </div>
   </section>
 
-  <!-- ══ VÍDEO — antes do Aplicativo ══ -->
-  <section id="video-app" class="video-section" style="background: var(--creme);">
-    <div class="container">
-      <div class="video-embed-wrap reveal">
-        <div class="video-embed">
-          <iframe src="https://www.youtube.com/embed/ASF2FUimnV8" title="Florescerá" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ══ 6. APLICATIVO ══ -->
   <section id="aplicativo" class="section">
     <div class="container">
@@ -755,13 +697,11 @@
           <div class="app-callout">"Um lugar para florescer todos os dias 💐"</div>
         </div>
       </div>
-      <p style="margin-top:24px; font-size:12px; color:var(--texto-suave); opacity:0.7;"><!-- TODO Papo de Alcance: trocar o mockup de celular acima pela foto real que a Ketlyn enviou, assim que recebermos o arquivo. --></p>
     </div>
   </section>
 
   <!-- ══ 7. PRODUTOS ══ -->
   <section id="produtos" class="section">
-    <img src="simbolo.png" alt="" class="produtos-bg-symbol" aria-hidden="true" loading="lazy" />
     <div class="container">
       <div class="reveal">
         <p class="section-label">Nossos produtos</p>
@@ -774,7 +714,10 @@
           <img src="icone.png" alt="" class="banner-breve-icon" aria-hidden="true" />
           <div>
             <p class="banner-breve-label">Novidades chegando</p>
-            <p class="banner-breve-titulo">Em breve</p>
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:2px;">
+              <img src="rose.png" alt="" style="width:36px; height:auto; opacity:0.9;" aria-hidden="true" />
+              <p class="banner-breve-titulo" style="margin-bottom:0">Em breve</p>
+            </div>
             <p class="banner-breve-sub">Nossa coleção completa de produtos estará disponível em breve. Fique atenta!</p>
           </div>
         </div>
@@ -798,8 +741,18 @@
           <h2 class="section-title" style="text-align:center">Florescemos melhor quando caminhamos juntas</h2>
           <p class="section-text">Acreditamos que nenhuma mulher foi criada para caminhar sozinha. A Comunidade Florescerá nasceu para conectar mulheres que compartilham dos mesmos valores, desafios e desejos.</p>
           <p class="section-text" style="margin-top:14px">Aqui você encontrará inspiração, acolhimento, conteúdos exclusivos, desafios e recursos pensados para apoiar sua jornada de forma prática e significativa.</p>
-          <div class="comunidade-actions reveal" style="transition-delay:0.15s">
-            <a href="https://chat.whatsapp.com/KGQboa7Mqh56y1EHusoex7?s=cl&p=i&mlu=3" target="_blank" rel="noopener" class="btn btn-wpp">Entrar no grupo do WhatsApp</a>
+          <div class="banner-breve banner-breve-comunidade reveal" style="transition-delay:0.15s">
+            <div class="banner-breve-inner">
+              <img src="selo.png" alt="" class="banner-breve-icon" aria-hidden="true" />
+              <div>
+                <p class="banner-breve-label">Comunidade</p>
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:2px;">
+                  <img src="rose.png" alt="" style="width:36px; height:auto; opacity:0.9;" aria-hidden="true" />
+                  <p class="banner-breve-titulo" style="margin-bottom:0">Em breve</p>
+                </div>
+                <p class="banner-breve-sub">Nossa comunidade está sendo preparada com muito cuidado. Em breve você poderá fazer parte!</p>
+              </div>
+            </div>
           </div>
           <p class="comunidade-citacao">"Porque florescemos melhor quando caminhamos juntas."</p>
         </div>
@@ -813,7 +766,6 @@
       <img src="logo.png" alt="Florescerá" class="footer-logo" loading="lazy" />
       <p>© 2025 Florescerá. Todos os direitos reservados.</p>
       <p style="margin-top:6px">Desenvolvido com ♡ para mulheres que florescem no ordinário.</p>
-      <p style="margin-top:6px">Desenvolvido por Yahweh Agência de Marketing</p>
     </div>
   </footer>
 
