@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Florescerá — Habite seu lar</title>
+  <link rel="icon" type="image/png" href="simbolo.png" />
+  <link rel="apple-touch-icon" href="simbolo.png" />
+  <meta name="description" content="Uma comunidade para mulheres que desejam viver cada estação da vida com propósito, fé e beleza no ordinário." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --rosa:        #D4826A;
+      --rosa-claro:  #E8A898;
+      --rosa-fundo:  #F5EDE8;
+      --terracota:   #8B4A3A;
+      --creme:       #F5F0E8;
+      --creme-escuro:#EDE5DA;
+      --branco:      #FFFFFF;
+      --texto:       #2C2018;
+      --texto-suave: #6B5A50;
+      --serif:       'Playfair Display', Georgia, serif;
+      --sans:        'Inter', system-ui, sans-serif;
+      --radius:      12px;
+      --max:         1100px;
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--sans); background: var(--creme); color: var(--texto); line-height: 1.7; overflow-x: hidden; }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── UTILITÁRIOS ── */
+    .container { width: 90%; max-width: var(--max); margin: 0 auto; }
+    .section { padding: 64px 0; }
+    .section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--rosa); margin-bottom: 12px; }
+    .section-title { font-family: var(--serif); font-size: clamp(28px, 5vw, 52px); font-weight: 400; line-height: 1.2; color: var(--terracota); margin-bottom: 20px; }
+    .section-text { font-size: 15px; color: var(--texto-suave); line-height: 1.85; max-width: 640px; }
+    .section-text + .section-text { margin-top: 14px; }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── BOTÕES ── */
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; border-radius: 99px; font-family: var(--sans); font-size: 14px; font-weight: 500; cursor: pointer; transition: transform 0.18s, box-shadow 0.18s; border: none; white-space: nowrap; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--rosa); color: var(--branco); }
+    .btn-primary:hover { box-shadow: 0 8px 24px rgba(212,130,106,0.4); }
+    .btn-outline { background: transparent; color: var(--terracota); border: 1.5px solid var(--terracota); }
+    .btn-outline:hover { box-shadow: 0 8px 20px rgba(139,74,58,0.15); }
+    .btn-wpp { background: #25D366; color: #fff; }
+    .btn-wpp:hover { box-shadow: 0 8px 24px rgba(37,211,102,0.3); }
+
+    /* ══════════════════════════════════════
+       NAV — mobile first
+    ══════════════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 12px 0;
+      background: rgba(245,240,232,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(212,130,106,0.15);
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 2px 16px rgba(44,32,24,0.08); }
+    nav .inner {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 90%; max-width: var(--max); margin: 0 auto;
+    }
+    .nav-logo img { height: 40px; width: auto; display: block; }
+    .nav-links { display: none; }
+    .nav-desktop-cta { display: none; }
+    .hamburger {
+      display: flex; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 6px;
+    }
+    .hamburger span { width: 22px; height: 1.5px; background: var(--terracota); border-radius: 2px; transition: all 0.25s; display: block; }
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4.5px, 4.5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4.5px, -4.5px); }
+
+    /* Menu mobile dropdown */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 64px; left: 0; right: 0;
+      background: var(--creme);
+      padding: 20px 5%;
+      border-bottom: 1px solid var(--creme-escuro);
+      z-index: 99;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: 0 8px 24px rgba(44,32,24,0.08);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 15px; color: var(--texto-suave);
+      padding: 12px 0;
+      border-bottom: 1px solid var(--creme-escuro);
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu .btn { margin-top: 8px; justify-content: center; width: 100%; }
+
+    /* Desktop nav */
+    @media (min-width: 769px) {
+      .nav-links { display: flex; gap: 28px; list-style: none; }
+      .nav-links a { font-size: 13px; color: var(--texto-suave); transition: color 0.2s; }
+      .nav-links a:hover { color: var(--rosa); }
+      .nav-desktop-cta { display: inline-flex; font-size: 13px; padding: 9px 20px; }
+      .hamburger { display: none; }
+      .mobile-menu { display: none !important; }
+    }
+
+    /* ══════════════════════════════════════
+       HERO — mobile first
+    ══════════════════════════════════════ */
+    #hero {
+      min-height: 100svh;
+      padding: 100px 0 64px;
+      background: var(--creme);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+    .hero-ornament {
+      position: absolute;
+      right: -60px; top: 50%;
+      transform: translateY(-50%);
+      height: 70vw;
+      max-height: 500px;
+      width: auto;
+      opacity: 0.10;
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 28px; }
+    .hero-video-wrap { display: flex; justify-content: center; }
+    @media (min-width: 769px) {
+      .hero-inner { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 48px; align-items: center; }
+      .hero-video-wrap { justify-content: flex-end; }
+    }
+
+    /* ══════════════════════════════════════
+       VÍDEOS PRÓPRIOS — formato vertical (9:16)
+    ══════════════════════════════════════ */
+    .video-section { padding: 48px 0; }
+    .video-embed-wrap { display: flex; justify-content: center; }
+    .video-embed {
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 9 / 16;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 24px 56px rgba(44,32,24,0.18);
+      background: var(--creme-escuro);
+    }
+    .video-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .video-el { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: var(--creme-escuro); }
+    .video-cover {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      background: linear-gradient(150deg, var(--rosa) 0%, var(--terracota) 100%);
+      border: 0; padding: 0; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .video-cover-symbol {
+      position: absolute; inset: 0; margin: auto;
+      width: 56%; max-width: 150px; height: auto;
+      opacity: 0.20; pointer-events: none;
+      filter: brightness(0) invert(1);
+    }
+    .video-play-btn {
+      position: relative; z-index: 1;
+      width: 64px; height: 64px; border-radius: 50%;
+      background: rgba(44,32,24,0.45); border: 2px solid rgba(255,255,255,0.85);
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.18s, background 0.18s; pointer-events: none;
+    }
+    .video-cover:hover .video-play-btn { transform: scale(1.06); background: rgba(44,32,24,0.65); }
+    .video-play-btn svg { width: 22px; height: 22px; margin-left: 3px; fill: #fff; }
+    .video-pause-btn {
+      position: absolute; right: 14px; bottom: 14px; z-index: 5;
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(0,0,0,0.45); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .video-embed:hover .video-pause-btn, .video-pause-btn.visible { opacity: 1; }
+    .video-pause-btn svg { width: 15px; height: 15px; fill: #fff; }
+
+    .hero-content { position: relative; z-index: 1; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 11px; font-weight: 500; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--rosa); margin-bottom: 20px;
+    }
+    .hero-eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--rosa); display: block; }
+    .hero-title { font-family: var(--serif); font-size: clamp(44px, 10vw, 88px); font-weight: 400; line-height: 1.0; color: var(--terracota); margin-bottom: 8px; }
+    .hero-subtitle { font-family: var(--serif); font-style: italic; font-size: clamp(16px, 4vw, 24px); color: var(--rosa); margin-bottom: 20px; }
+    .hero-text { font-size: 16px; color: var(--texto-suave); line-height: 1.8; margin-bottom: 32px; max-width: 520px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    /* ══════════════════════════════════════
+       SOBRE
+    ══════════════════════════════════════ */
+    #sobre { background: var(--branco); }
+
+    /* Mobile: empilhado */
+    .sobre-visual {
+      display: flex; justify-content: center;
+      margin-bottom: 40px;
+    }
+    .sobre-circulo {
+      width: min(260px, 70vw);
+      height: min(260px, 70vw);
+      border-radius: 50%;
+      background: var(--rosa-fundo);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .sobre-circulo img { width: 65%; height: auto; }
+    /* Badge: abaixo do círculo no mobile */
+    .sobre-badge {
+      position: static;
+      background: var(--terracota);
+      color: var(--branco);
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 13px;
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      line-height: 1.6;
+      margin-top: 16px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(44,32,24,0.15);
+    }
+    .sobre-texto .section-text { max-width: 100%; }
+
+    /* Desktop: lado a lado */
+    @media (min-width: 769px) {
+      .sobre-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+      .sobre-visual { margin-bottom: 0; display: block; }
+      .sobre-circulo { width: 360px; height: 360px; margin: 0 auto; }
+      .sobre-badge {
+        position: absolute;
+        bottom: -16px; right: -20px;
+        max-width: 200px;
+        text-align: left;
+        margin-top: 0;
+      }
+      .sobre-texto .section-text { max-width: 640px; }
+    }
+
+    /* ══════════════════════════════════════
+       HISTÓRIA
+    ══════════════════════════════════════ */
+    #historia { background: var(--creme); position: relative; overflow: hidden; }
+    #historia .container { position: relative; z-index: 1; }
+    .historia-ornament { width: 64px; height: auto; margin-bottom: 20px; opacity: 0.5; }
+    .historia-paragraphs p { font-size: 15px; color: var(--texto-suave); line-height: 1.9; margin-bottom: 18px; }
+    .historia-paragraphs p:first-child { font-family: var(--serif); font-size: 17px; color: var(--texto); }
+    .historia-destaque {
+      font-family: var(--serif); font-style: italic;
+      color: var(--terracota); font-size: 16px;
+      border-left: 3px solid var(--rosa);
+      padding-left: 18px; margin: 4px 0 18px; line-height: 1.6;
+    }
+
+    @media (min-width: 769px) {
+      .historia-inner { display: grid; grid-template-columns: 1fr 2fr; gap: 64px; align-items: start; }
+      .historia-sticky { position: sticky; top: 100px; }
+      .historia-ornament { width: 80px; }
+      .historia-paragraphs p { font-size: 16px; }
+    }
+
+    /* ══════════════════════════════════════
+       TIME
+    ══════════════════════════════════════ */
+    #time { background: var(--branco); }
+
+    .time-fundadora {
+      display: flex; flex-direction: column; gap: 20px;
+      padding: 28px; background: var(--creme);
+      border-radius: 20px; margin-bottom: 48px;
+      border-left: 4px solid var(--rosa);
+    }
+    .avatar-box {
+      width: 88px; height: 88px;
+      border-radius: 50%; overflow: hidden; flex-shrink: 0;
+      border: 3px solid var(--rosa-claro);
+      box-shadow: 0 4px 16px rgba(212,130,106,0.2);
+    }
+    .avatar-box img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    .time-nome { font-family: var(--serif); font-size: 22px; color: var(--terracota); margin-bottom: 4px; }
+    .time-cargo { font-size: 11px; letter-spacing: 0.1em; color: var(--rosa); text-transform: uppercase; margin-bottom: 12px; }
+    .time-bio { font-size: 14px; color: var(--texto-suave); line-height: 1.8; }
+
+    @media (min-width: 769px) {
+      .time-fundadora { flex-direction: row; gap: 36px; padding: 36px; align-items: flex-start; }
+      .time-nome { font-size: 24px; }
+      .time-bio { font-size: 15px; }
+    }
+
+    .parceiras-titulo { font-family: var(--serif); font-size: 20px; color: var(--terracota); margin-bottom: 24px; font-style: italic; }
+    .parceiras-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .parceira-card {
+      padding: 20px; background: var(--creme);
+      border-radius: var(--radius); border: 1px solid var(--creme-escuro);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .parceira-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(212,130,106,0.15); }
+    .parceira-foto {
+      width: 60px; height: 60px;
+      border-radius: 50%; overflow: hidden; margin-bottom: 12px;
+      border: 2px solid var(--rosa-claro);
+    }
+    .parceira-foto img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    .parceira-nome { font-family: var(--serif); font-size: 16px; color: var(--terracota); margin-bottom: 3px; }
+    .parceira-role { font-size: 11px; color: var(--rosa); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
+    .parceira-desc { font-size: 13px; color: var(--texto-suave); line-height: 1.65; }
+
+    @media (min-width: 769px) {
+      .parceiras-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+      .parceira-card { padding: 28px; }
+      .parceira-foto { width: 72px; height: 72px; margin-bottom: 16px; }
+      .parceira-nome { font-size: 18px; }
+      .parceira-desc { font-size: 14px; }
+    }
+
+    .citacao-jardim {
+      text-align: center; font-family: var(--serif);
+      font-size: clamp(18px, 3vw, 26px); font-style: italic;
+      color: var(--terracota); padding-top: 40px; opacity: 0.7;
+    }
+
+    /* ══════════════════════════════════════
+       MISSÃO
+    ══════════════════════════════════════ */
+    #missao {
+      background: var(--terracota);
+      padding: 80px 0; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .missao-selo-deco {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 160px; opacity: 0.1; pointer-events: none;
+    }
+    .missao-selo-deco.left { left: 40px; }
+    .missao-selo-deco.right { right: 40px; transform: translateY(-50%) scaleX(-1); }
+    #missao .container { position: relative; }
+    .missao-label { color: rgba(255,255,255,0.55); margin-bottom: 16px; }
+    .missao-text {
+      font-family: var(--serif);
+      font-size: clamp(20px, 4vw, 42px);
+      font-weight: 400; line-height: 1.4;
+      color: var(--branco); max-width: 760px; margin: 0 auto;
+    }
+
+    @media (max-width: 768px) {
+      .missao-selo-deco { display: none; }
+    }
+
+    /* ══════════════════════════════════════
+       APLICATIVO
+    ══════════════════════════════════════ */
+    #aplicativo { background: var(--creme); }
+    .app-features { list-style: none; margin: 24px 0; display: flex; flex-direction: column; gap: 12px; }
+    .app-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--texto-suave); }
+    .feature-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--rosa); margin-top: 8px; flex-shrink: 0; }
+    .app-callout {
+      font-family: var(--serif); font-size: 17px; font-style: italic;
+      color: var(--terracota); border-left: 3px solid var(--rosa);
+      padding-left: 18px; margin-top: 28px; line-height: 1.6;
+    }
+    .app-visual { display: flex; justify-content: center; margin-bottom: 40px; }
+    .phone-mockup {
+      width: 200px; height: 400px;
+      background: var(--branco); border-radius: 32px;
+      border: 7px solid var(--creme-escuro);
+      box-shadow: 0 32px 64px rgba(44,32,24,0.12);
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .phone-top { background: var(--rosa-fundo); padding: 20px 16px 16px; text-align: center; }
+    .phone-top img { width: 40px; height: auto; margin: 0 auto 8px; }
+    .phone-app-name { font-family: var(--serif); font-size: 14px; color: var(--terracota); }
+    .phone-body { flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+    .phone-card { background: var(--creme); border-radius: 8px; padding: 10px; }
+    .phone-card-title { font-weight: 500; color: var(--terracota); margin-bottom: 3px; font-size: 11px; }
+    .phone-card p { font-size: 10px; color: var(--texto-suave); }
+    .app-screenshot {
+      width: 240px;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 32px 64px rgba(44,32,24,0.12);
+      border: 7px solid var(--creme-escuro);
+    }
+    .app-screenshot img { width: 100%; height: auto; display: block; }
+
+    @media (min-width: 769px) {
+      .app-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+      .app-visual { margin-bottom: 0; }
+      .phone-mockup { width: 240px; height: 460px; }
+      .app-screenshot { width: 280px; }
+      .app-features li { font-size: 15px; }
+    }
+
+    /* ══════════════════════════════════════
+       PRODUTOS
+    ══════════════════════════════════════ */
+    #produtos { background: var(--branco); position: relative; overflow: hidden; }
+    #produtos .container { position: relative; z-index: 1; }
+    .produtos-bg-symbol {
+      position: absolute;
+      right: -20px; top: 50%;
+      transform: translateY(-50%);
+      width: 440px;
+      max-width: 65vw;
+      opacity: 0.16;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .produtos-cta-box {
+      display: flex; flex-direction: column; gap: 20px;
+      padding: 28px; background: var(--rosa-fundo);
+      border-radius: 20px; border: 1px solid rgba(212,130,106,0.2);
+      margin-top: 32px;
+    }
+    .produtos-cta-text { font-family: var(--serif); font-size: 20px; color: var(--terracota); line-height: 1.4; }
+    .produtos-cta-sub { font-size: 13px; color: var(--texto-suave); margin-top: 6px; }
+
+    @media (min-width: 769px) {
+      .produtos-cta-box { flex-direction: row; align-items: center; justify-content: space-between; padding: 40px 48px; }
+      .produtos-cta-text { font-size: 22px; max-width: 380px; }
+    }
+
+    /* ══════════════════════════════════════
+       COMUNIDADE
+    ══════════════════════════════════════ */
+    #comunidade { background: linear-gradient(135deg, var(--rosa-fundo) 0%, var(--creme) 60%); text-align: center; }
+    .comunidade-inner { max-width: 680px; margin: 0 auto; }
+    .comunidade-inner .section-text { max-width: 100%; margin: 0 auto; }
+    .comunidade-selo { width: 100px; height: auto; margin: 0 auto 28px; opacity: 0.65; }
+    .comunidade-actions { margin-top: 32px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .comunidade-citacao { font-family: var(--serif); font-size: 15px; font-style: italic; color: var(--rosa); margin-top: 32px; opacity: 0.85; }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    footer { background: var(--texto); color: rgba(255,255,255,0.4); padding: 48px 0; text-align: center; font-size: 13px; }
+    .footer-logo { height: 44px; width: auto; margin: 0 auto 14px; filter: brightness(0) invert(1); opacity: 0.8; }
+    footer p + p { margin-top: 6px; }
+
+    /* ── PETALAS PARALLAX — mouse + touch + scroll ── */
+    .petalas-wrap {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .petalas-layer {
+      position: absolute;
+      /* margem pra parallax não cortar bordas */
+      top: -8%; left: -8%;
+      width: 116%; height: 116%;
+      will-change: transform;
+    }
+    .petalas-layer img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      /* cover: expande a imagem para cobrir toda a área,
+         borda esquerda encosta na borda da seção */
+      object-fit: cover;
+      object-position: left center;
+      background: transparent;
+    }
+    .petalas-layer { opacity: 0.82; }
+    .petalas-layer.petalas-suave { opacity: 0.14; }
+    @keyframes petal-in { from { opacity:0; } to { opacity:1; } }
+    .petalas-wrap { animation: petal-in 1.2s ease forwards; }
+
+    /* Mobile: cobre a seção inteira, pétalas nas bordas */
+    @media (max-width: 768px) {
+      .petalas-layer {
+        top: -5%; left: -5%;
+        width: 110%; height: 110%;
+      }
+      .petalas-layer img {
+        object-fit: cover;
+        object-position: center center;
+      }
+      .petalas-layer { opacity: 0.55; }
+      .petalas-layer.petalas-suave { opacity: 0.10; }
+    }
+
+    /* ── BANNER EM BREVE ── */
+    .banner-breve {
+      margin-top: 32px;
+      background: linear-gradient(135deg, var(--rosa-fundo) 0%, var(--creme-escuro) 100%);
+      border: 1px solid rgba(212,130,106,0.25);
+      border-radius: 20px;
+      padding: 28px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .banner-breve::before {
+      content: '';
+      position: absolute;
+      top: -30px; right: -30px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: rgba(212,130,106,0.08);
+    }
+    .banner-breve::after {
+      content: '';
+      position: absolute;
+      bottom: -20px; left: -20px;
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: rgba(212,130,106,0.06);
+    }
+    .banner-breve-inner {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+    .banner-breve-icon {
+      width: 56px;
+      height: auto;
+      flex-shrink: 0;
+      opacity: 0.75;
+    }
+    .banner-breve-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--rosa);
+      margin-bottom: 4px;
+    }
+    .banner-breve-titulo {
+      font-family: var(--serif);
+      font-size: clamp(22px, 4vw, 32px);
+      font-style: italic;
+      color: var(--terracota);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .banner-breve-sub {
+      font-size: 14px;
+      color: var(--texto-suave);
+      line-height: 1.6;
+      max-width: 400px;
+    }
+    /* Comunidade: centralizado */
+    .banner-breve-comunidade {
+      text-align: left;
+      margin-top: 32px;
+    }
+    .banner-breve-comunidade .banner-breve-icon {
+      width: 64px;
+    }
+
+    @media (max-width: 600px) {
+      .banner-breve { padding: 22px 20px; }
+      .banner-breve-inner { gap: 16px; }
+      .banner-breve-icon { width: 44px; }
+      .banner-breve-comunidade .banner-breve-icon { width: 52px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAV ══ -->
+  <nav id="navbar">
+    <div class="inner">
+      <a href="#" class="nav-logo">
+        <img src="logo.png" alt="Florescerá" width="120" height="40" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="#sobre">Sobre</a></li>
+        <li><a href="#historia">História</a></li>
+        <li><a href="#time">Time</a></li>
+        <li><a href="#aplicativo">Aplicativo</a></li>
+        <li><a href="#produtos">Produtos</a></li>
+        <li><a href="#comunidade">Comunidade</a></li>
+      </ul>
+      <a href="#comunidade" class="btn btn-outline nav-desktop-cta">Faça parte</a>
+      <button class="hamburger" id="hamburger" aria-label="Abrir menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu" role="navigation">
+    <a href="#sobre" onclick="closeMobile()">Sobre</a>
+    <a href="#historia" onclick="closeMobile()">Nossa história</a>
+    <a href="#time" onclick="closeMobile()">Time</a>
+    <a href="#aplicativo" onclick="closeMobile()">Aplicativo</a>
+    <a href="#produtos" onclick="closeMobile()">Produtos</a>
+    <a href="#comunidade" onclick="closeMobile()">Comunidade</a>
+    <a href="#comunidade" class="btn btn-primary" onclick="closeMobile()">Faça parte</a>
+  </div>
+
+  <!-- ══ 1. HERO ══ -->
+  <section id="hero">
+    <img src="simbolo.png" alt="" class="hero-ornament" aria-hidden="true" loading="eager" />
+    <div class="petalas-wrap" aria-hidden="true">
+      <div class="petalas-layer" data-depth="0.4">
+        <img src="petalas1.png" alt="" loading="eager" />
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-content reveal">
+          <span class="hero-eyebrow">Bem-vinda</span>
+          <h1 class="hero-title">Florescerá</h1>
+          <p class="hero-subtitle">Desacelere. Habite seu lar.</p>
+          <p class="hero-text">Uma comunidade para mulheres que desejam viver cada estação da vida com propósito, fé e beleza no ordinário.</p>
+          <div class="hero-actions">
+            <a href="#sobre" class="btn btn-primary">Conheça a Florescerá</a>
+            <a href="#comunidade" class="btn btn-outline">Faça parte</a>
+          </div>
+        </div>
+        <div class="hero-video-wrap reveal" style="transition-delay:0.15s">
+          <div class="video-embed">
+            <video class="video-el" playsinline preload="metadata" muted>
+              <source src="video-site2.mp4" type="video/mp4" />
+            </video>
+            <button class="video-cover" aria-label="Reproduzir vídeo">
+              <img src="simbolo-branco.png" class="video-cover-symbol" alt="" aria-hidden="true" loading="lazy" />
+              <span class="video-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 2. SOBRE ══ -->
+  <section id="sobre" class="section">
+    <div class="container">
+      <!-- Mobile: visual primeiro -->
+      <div class="sobre-visual reveal">
+        <div>
+          <div class="sobre-circulo">
+            <img src="simbolo.png" alt="Símbolo Florescerá" loading="lazy" />
+          </div>
+          <div class="sobre-badge">"Por meio de produtos, conteúdos e comunidade, inspiramos mulheres a cultivarem lares cheios de amor."</div>
+        </div>
+      </div>
+
+      <!-- Desktop: grade lado a lado -->
+      <div class="sobre-grid" style="display:contents">
+        <div class="sobre-texto reveal" style="transition-delay:0.1s">
+          <p class="section-label">Quem somos</p>
+          <h2 class="section-title">A beleza das coisas que acontecem todos os dias</h2>
+          <p class="section-text">A Florescerá nasceu de uma convicção simples, mas profunda: existe beleza nas coisas que acontecem todos os dias.</p>
+          <p class="section-text">Vivemos em uma época que valoriza o extraordinário — mas acreditamos que é no ordinário que a vida realmente floresce. Na mesa posta para a família, na oração silenciosa da manhã, no café preparado com amor, na casa que acolhe.</p>
+          <p class="section-text">Mais do que uma marca, a Florescerá é um convite para desacelerar, habitar o lar e reconhecer que Deus também está presente nas tarefas mais simples do dia a dia.</p>
+          <p class="section-text" style="margin-top:18px; font-family:var(--serif); font-style:italic; color:var(--terracota); font-size:17px;">Porque quando uma mulher floresce, tudo ao seu redor floresce também.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 3. HISTÓRIA ══ -->
+  <section id="historia" class="section">
+    <div class="petalas-wrap" aria-hidden="true">
+      <div class="petalas-layer petalas-suave" data-depth="0.2">
+        <img src="petalas1.png" alt="" loading="lazy" />
+      </div>
+    </div>
+    <div class="container">
+      <div class="historia-inner">
+        <div class="historia-sticky reveal">
+          <img src="icone.png" alt="" class="historia-ornament" aria-hidden="true" loading="lazy" />
+          <p class="section-label">Nossa história</p>
+          <h2 class="section-title">Nasceu no secreto</h2>
+        </div>
+        <div class="historia-paragraphs reveal" style="transition-delay:0.1s">
+          <p>A Florescerá não nasceu em uma reunião de negócios ou a partir de uma estratégia de mercado. Ela nasceu no secreto.</p>
+          <p style="font-family:var(--serif); font-style:italic; color:var(--texto);">Em um momento de oração, uma imagem marcou para sempre o coração da fundadora: uma grande rocha caía ao chão e, daquele lugar aparentemente duro e improvável, brotava uma flor.</p>
+          <p>A rocha representava a força, a firmeza e os desafios que muitas mulheres enfrentam ao longo da vida. A flor representava a delicadeza, a beleza e a capacidade de florescer mesmo em terrenos difíceis.</p>
+          <p>Primeiro como uma convicção, depois como um sonho e, por fim, como uma missão.</p>
+          <p class="historia-destaque">A Florescerá existe para lembrar que as tarefas do cotidiano não são pequenas demais para terem valor. Existe dignidade no cuidado do lar, valor na criação dos filhos, beleza na rotina.</p>
+          <p>Por isso, cada produto, conteúdo e projeto carrega a mesma mensagem: Deus se importa com o ordinário. E é justamente ali, nos dias comuns, que muitas das flores mais bonitas da nossa história são cultivadas.</p>
+          <p style="font-family:var(--serif); font-style:italic; color:var(--terracota); font-size:16px;">A Florescerá é o resultado de uma visão, mas também de uma oração: que mulheres encontrem alegria em habitar o lugar onde Deus as plantou e descubram que ainda há muito para florescer.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 4. TIME ══ -->
+  <section id="time" class="section">
+    <div class="container">
+      <div class="reveal">
+        <p class="section-label">Quem constrói</p>
+        <h2 class="section-title">As mulheres por trás da Florescerá</h2>
+      </div>
+      <div class="time-fundadora reveal" style="transition-delay:0.1s">
+        <div class="avatar-box">
+          <img src="ketlyn.jpg" alt="Ketlyn Menezes" loading="lazy" />
+        </div>
+        <div>
+          <p class="time-nome">Ketlyn Menezes</p>
+          <p class="time-cargo">Fundadora e Idealizadora</p>
+          <p class="time-bio">Esposa, mãe de três filhos, engenheira por formação e apaixonada por comunicação, Ketlyn é a criadora da Florescerá e responsável por conduzir a visão, a mensagem e a essência da marca. A partir de uma experiência marcante com Deus, nasceu o propósito de inspirar mulheres a encontrarem beleza no ordinário, propósito no cuidado com o lar e significado em cada estação da vida.</p>
+        </div>
+      </div>
+
+      <p class="parceiras-titulo reveal">Parceiras do Projeto</p>
+      <div class="parceiras-grid">
+        <div class="parceira-card reveal" style="transition-delay:0.05s">
+          <div class="parceira-foto"><img src="nathalia.jpg" alt="Nathália" loading="lazy" /></div>
+          <p class="parceira-nome">Nathália</p>
+          <p class="parceira-role">Naturel Velas · Aromas</p>
+          <p class="parceira-desc">Especialista em aromas, responsável pelas fragrâncias e experiências olfativas das coleções da Florescerá.</p>
+        </div>
+        <div class="parceira-card reveal" style="transition-delay:0.1s">
+          <div class="parceira-foto"><img src="leonara.jpg" alt="Leonara" loading="lazy" /></div>
+          <p class="parceira-nome">Leonara</p>
+          <p class="parceira-role">Smile Criative · Produtos</p>
+          <p class="parceira-desc">Transforma ideias em peças que unem beleza, funcionalidade e propósito, refletindo a identidade da marca.</p>
+        </div>
+        <div class="parceira-card reveal" style="transition-delay:0.15s">
+          <div class="parceira-foto"><img src="juliana.jpg" alt="Juliana Santos Viana" loading="lazy" /></div>
+          <p class="parceira-nome">Juliana Santos Viana</p>
+          <p class="parceira-role">Desenvolvimento · Tecnologia</p>
+          <p class="parceira-desc">Responsável pelo Aplicativo Florescerá, unindo tecnologia e propósito para apoiar a rotina e vida devocional.</p>
+        </div>
+        <div class="parceira-card reveal" style="transition-delay:0.2s">
+          <div class="parceira-foto"><img src="cleide.jpg" alt="Cleide Ferreira" loading="lazy" /></div>
+          <p class="parceira-nome">Cleide Ferreira</p>
+          <p class="parceira-role">Educadora Física · Bem-estar</p>
+          <p class="parceira-desc">Parceira na promoção do autocuidado, movimento e bem-estar da mulher em suas diferentes estações de vida.</p>
+        </div>
+      </div>
+      <p class="citacao-jardim reveal">"Nenhum jardim floresce sozinho."</p>
+    </div>
+  </section>
+
+  <!-- ══ 5. MISSÃO ══ -->
+  <section id="missao">
+    <img src="selo.png" alt="" class="missao-selo-deco left" aria-hidden="true" loading="lazy" />
+    <img src="selo.png" alt="" class="missao-selo-deco right" aria-hidden="true" loading="lazy" />
+    <div class="container">
+      <p class="section-label missao-label reveal">Nossa missão</p>
+      <p class="missao-text reveal" style="transition-delay:0.1s">Cultivar uma geração de mulheres que florescem primeiro dentro de casa e transformam o mundo a partir dele.</p>
+    </div>
+  </section>
+
+  <!-- ══ VÍDEO — antes do Aplicativo ══ -->
+  <section id="video-app" class="video-section" style="background: var(--creme);">
+    <div class="container">
+      <div class="video-embed-wrap reveal">
+        <div class="video-embed">
+          <video class="video-el" playsinline preload="metadata" muted>
+            <source src="video-site1.mp4" type="video/mp4" />
+          </video>
+          <button class="video-cover" aria-label="Reproduzir vídeo">
+            <img src="simbolo-branco.png" class="video-cover-symbol" alt="" aria-hidden="true" loading="lazy" />
+            <span class="video-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 6. APLICATIVO ══ -->
+  <section id="aplicativo" class="section">
+    <div class="container">
+      <div class="app-grid">
+        <div class="app-visual reveal">
+          <div class="app-screenshot">
+            <img src="app-premium-screenshot.jpg" alt="Tela do Aplicativo Florescerá — plano Premium" loading="lazy" />
+          </div>
+        </div>
+        <div class="reveal" style="transition-delay:0.1s">
+          <p class="section-label">Aplicativo</p>
+          <h2 class="section-title">Uma companhia para cada estação da vida</h2>
+          <p class="section-text">O Aplicativo Florescerá nasceu para caminhar ao lado da mulher em cada estação. Mais do que uma ferramenta de organização, é um espaço de apoio, inspiração e intencionalidade.</p>
+          <ul class="app-features">
+            <li><span class="feature-dot"></span>Ferramentas práticas para o dia a dia</li>
+            <li><span class="feature-dot"></span>Conteúdos exclusivos e devocionais</li>
+            <li><span class="feature-dot"></span>Planejamentos, receitas e recursos práticos</li>
+            <li><span class="feature-dot"></span>Apoio à vida espiritual e familiar</li>
+          </ul>
+          <div class="app-callout">"Um lugar para florescer todos os dias 💐"</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 7. PRODUTOS ══ -->
+  <section id="produtos" class="section">
+    <img src="simbolo-branco.png" alt="" class="produtos-bg-symbol" aria-hidden="true" loading="lazy" />
+    <div class="container">
+      <div class="reveal">
+        <p class="section-label">Nossos produtos</p>
+        <h2 class="section-title">Criados com propósito</h2>
+        <p class="section-text">Cada produto da Florescerá nasce para transformar momentos comuns em experiências cheias de significado — unindo beleza, funcionalidade e intencionalidade.</p>
+        <p class="section-text" style="margin-top:14px">Mais do que objetos, criamos experiências que convidam você a desacelerar, habitar seu lar e encontrar beleza nas pequenas coisas.</p>
+      </div>
+      <div class="banner-breve reveal" style="transition-delay:0.1s">
+        <div class="banner-breve-inner">
+          <img src="simbolo-branco.png" alt="" class="banner-breve-icon" aria-hidden="true" />
+          <div>
+            <p class="banner-breve-label">Novidades chegando</p>
+            <p class="banner-breve-titulo">Em breve</p>
+            <p class="banner-breve-sub">Nossa coleção completa de produtos estará disponível em breve. Fique atenta!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ 8. COMUNIDADE ══ -->
+  <section id="comunidade" class="section" style="position:relative; overflow:hidden;">
+    <div class="petalas-wrap" aria-hidden="true">
+      <div class="petalas-layer" data-depth="0.3">
+        <img src="petalas2.png" alt="" loading="lazy" />
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="comunidade-inner" style="position:relative; z-index:2;">
+        <div class="reveal">
+          <img src="selo.png" alt="" class="comunidade-selo" aria-hidden="true" loading="lazy" />
+          <p class="section-label" style="text-align:center">Comunidade</p>
+          <h2 class="section-title" style="text-align:center">Florescemos melhor quando caminhamos juntas</h2>
+          <p class="section-text">Acreditamos que nenhuma mulher foi criada para caminhar sozinha. A Comunidade Florescerá nasceu para conectar mulheres que compartilham dos mesmos valores, desafios e desejos.</p>
+          <p class="section-text" style="margin-top:14px">Aqui você encontrará inspiração, acolhimento, conteúdos exclusivos, desafios e recursos pensados para apoiar sua jornada de forma prática e significativa.</p>
+          <div class="comunidade-actions reveal" style="transition-delay:0.15s">
+            <a href="https://chat.whatsapp.com/KGQboa7Mqh56y1EHusoex7?s=cl&p=i&mlu=3" target="_blank" rel="noopener" class="btn btn-wpp">Entrar no grupo do WhatsApp</a>
+          </div>
+          <p class="comunidade-citacao">"Porque florescemos melhor quando caminhamos juntas."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <img src="logo.png" alt="Florescerá" class="footer-logo" loading="lazy" />
+      <p>© 2025 Florescerá. Todos os direitos reservados.</p>
+      <p style="margin-top:6px">Desenvolvido com ♡ para mulheres que florescem no ordinário.</p>
+      <p style="margin-top:6px">Desenvolvido por Yahweh Agência de Marketing</p>
+    </div>
+  </footer>
+
+  <script>
+    // Nav scroll
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    // Hamburger
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      hamburger.classList.toggle('open', isOpen);
+      hamburger.setAttribute('aria-expanded', isOpen);
+    });
+    function closeMobile() {
+      mobileMenu.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    }
+
+    // Reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Sobre: layout responsivo sem duplicar HTML
+    function aboutLayout() {
+      const visual = document.querySelector('.sobre-visual');
+      const texto = document.querySelector('.sobre-texto');
+      const grid = document.querySelector('.sobre-grid');
+      if (!visual || !texto) return;
+      if (window.innerWidth >= 769) {
+        grid.style.display = 'grid';
+        grid.style.gridTemplateColumns = '1fr 1fr';
+        grid.style.gap = '80px';
+        grid.style.alignItems = 'center';
+        grid.appendChild(visual);
+        grid.appendChild(texto);
+      } else {
+        grid.style.display = 'contents';
+      }
+    }
+    aboutLayout();
+    window.addEventListener('resize', aboutLayout, { passive: true });
+
+    // ── PARALLAX PÉTALAS — mouse (desktop) + touch (mobile) + scroll ──
+    (function () {
+      const layers = document.querySelectorAll('.petalas-layer');
+      if (!layers.length) return;
+
+      // Limites de movimento em px
+      const MAX_MOUSE = 22;
+      const MAX_TOUCH = 14;
+      const SCROLL_FACTOR = 0.12;
+
+      // Estado atual de cada eixo
+      var mouseX = 0, mouseY = 0;
+      var touchX = 0, touchY = 0;
+      var scrollY = 0;
+      var ticking = false;
+
+      function render() {
+        layers.forEach(function (layer) {
+          var depth = parseFloat(layer.dataset.depth) || 0.5;
+          var tx = (mouseX + touchX) * depth;
+          var ty = (mouseY + touchY) * depth + scrollY * SCROLL_FACTOR * depth;
+          layer.style.transform = 'translate(' + tx + 'px, ' + ty + 'px)';
+        });
+        ticking = false;
+      }
+
+      function requestRender() {
+        if (!ticking) { requestAnimationFrame(render); ticking = true; }
+      }
+
+      // Mouse (desktop)
+      document.addEventListener('mousemove', function (e) {
+        var cx = window.innerWidth / 2;
+        var cy = window.innerHeight / 2;
+        mouseX = ((e.clientX - cx) / cx) * MAX_MOUSE * -1;
+        mouseY = ((e.clientY - cy) / cy) * MAX_MOUSE * -1;
+        requestRender();
+      }, { passive: true });
+
+      // Touch (mobile) — usa o delta do toque em relação ao centro da tela
+      document.addEventListener('touchmove', function (e) {
+        var t = e.touches[0];
+        var cx = window.innerWidth / 2;
+        var cy = window.innerHeight / 2;
+        touchX = ((t.clientX - cx) / cx) * MAX_TOUCH * -1;
+        touchY = ((t.clientY - cy) / cy) * MAX_TOUCH * -1;
+        requestRender();
+      }, { passive: true });
+
+      document.addEventListener('touchend', function () {
+        // Volta suavemente ao centro
+        touchX = 0; touchY = 0;
+        requestRender();
+      }, { passive: true });
+
+      // Scroll parallax vertical
+      window.addEventListener('scroll', function () {
+        scrollY = window.scrollY;
+        requestRender();
+      }, { passive: true });
+
+      // Estado inicial
+      render();
+    }());
+
+    // ── VÍDEOS — arquivo próprio (sem YouTube), capa da marca + só o botão de pausar ──
+    (function () {
+      const wraps = document.querySelectorAll('.video-embed');
+      if (!wraps.length) return;
+
+      const ICON_PLAY = '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+      const ICON_PAUSE = '<svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+
+      wraps.forEach(function (wrap) {
+        const video = wrap.querySelector('.video-el');
+        const cover = wrap.querySelector('.video-cover');
+        if (!video || !cover) return;
+
+        let pauseBtn = null;
+
+        cover.addEventListener('click', function () {
+          cover.remove();
+          pauseBtn = document.createElement('button');
+          pauseBtn.className = 'video-pause-btn visible';
+          pauseBtn.type = 'button';
+          pauseBtn.setAttribute('aria-label', 'Pausar ou reproduzir');
+          pauseBtn.innerHTML = ICON_PAUSE;
+          wrap.appendChild(pauseBtn);
+
+          video.muted = false;
+          video.play().catch(function () { /* usuário pode retomar pelo botão de pausa */ });
+
+          pauseBtn.addEventListener('click', function () {
+            if (video.paused) video.play(); else video.pause();
+          });
+        }, { once: true });
+
+        video.addEventListener('play', function () { if (pauseBtn) pauseBtn.innerHTML = ICON_PAUSE; });
+        video.addEventListener('pause', function () { if (pauseBtn) pauseBtn.innerHTML = ICON_PLAY; });
+      });
+    }());
+  </script>
+</body>
+</html>
